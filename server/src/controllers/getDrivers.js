@@ -2,6 +2,7 @@ const axios = require("axios")
 const {Driver, Team} =require('../db')
 const {Op} = require("sequelize")
 const API = "http://localhost:5000/drivers"
+const DEFAULT_IMAGE_URL = "https://t3.ftcdn.net/jpg/05/70/71/46/360_F_570714673_cclOhgn229q81CQjO1C53jIFzRbMtI86.jpg"
 
 const getDrivers = async(req,res)=>{
     try {
@@ -13,9 +14,9 @@ const getDrivers = async(req,res)=>{
         const localDriversJSON=localDrivers.map(driver=>{
             return{
                 ...driver.toJSON(),
-                teams:driver.teams.map(team=>{
-                    return team.name
-                })
+                teams: driver.teams.map(team => team.name),
+                // Verificar si el conductor tiene una imagen. Si no la tiene, asignar la imagen por defecto
+                image: driver.image ? driver.image : DEFAULT_IMAGE_URL
             }
         })
 
