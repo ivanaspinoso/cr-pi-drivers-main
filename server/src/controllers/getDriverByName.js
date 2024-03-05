@@ -1,14 +1,21 @@
-const axios = require("axios")
-const {Driver,Team}= require("./../db")
-const {Op, Sequelize}= require("sequelize")
+// Controlador para buscar conductores por nombre
+const axios = require("axios");
+const { Driver, Team } = require("../db");
+const { Op } = require("sequelize");
+
+
+
 
 const getDriversByNameApi = async (name) => {
     const response = await axios.get(`http://localhost:5000/drivers`);
-
     const { data } = response;
 
+    // Normalizar el nombre proporcionado a minúsculas
+    const lowerCaseName = name.toLowerCase();
+
+    // Filtrar los conductores cuyo nombre coincida con el nombre proporcionado
     const filteredData = data.filter(driver => 
-        driver.name.forename.toLowerCase().includes(name.toLowerCase())
+        driver.name.forename.toLowerCase().includes(lowerCaseName)
     );
 
     return filteredData;
@@ -16,16 +23,20 @@ const getDriversByNameApi = async (name) => {
 
 const getDriversByNameDB = async (name) => {
     const data = await Driver.findAll({
-        where: Sequelize.where(
-            Sequelize.fn('LOWER', Sequelize.col('Drivers.name')),
-            {
-                [Op.iLike]: `%${name.toLowerCase()}%`
-            }
-        ),
-        include : {
-            model : Team,
-            through : {
-                attributes : []
+        where: {
+            [Op.or]: [
+                Sequelize.where(
+                    Sequelize.fn('LOWER', Sequelize.col('Drivers.name.forename')),
+                    {
+                        [Op.like]: `%${name.toLowerCase()}%`
+                    }
+                )
+            ]
+        },
+        include: {
+            model: Team,
+            through: {
+                attributes: []
             }
         }
     });
@@ -49,20 +60,24 @@ const getDriversByNameDB = async (name) => {
 }
 
 const getDriversByName = async (req, res) => {
-
+    console.log('Entrando en el controlador getDriversByName');
     try {
+        const { name } = req.query;
 
-        const {name} = req.query;
-
+        // Obtener los conductores de la API y de la base de datos
         const driversAPI = await getDriversByNameApi(name);
         const driversDB = await getDriversByNameDB(name);
+
+        // Combinar los resultados de la API y de la base de datos
         const drivers = [...driversAPI, ...driversDB];
+        console.log('Enviando respuesta');
 
         return res.status(200).json(drivers);
 
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
+
 }
 
-module.exports=getDriversByName;
+module.exports = getDriversByName;
