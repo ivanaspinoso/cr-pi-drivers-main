@@ -1,6 +1,6 @@
 // Controlador para buscar conductores por nombre
 const axios = require("axios");
-const { Driver, Team } = require("../db");
+const { Driver, Team, Sequelize } = require("../db");
 const { Op } = require("sequelize");
 
 
@@ -59,7 +59,7 @@ const getDriversByNameDB = async (name) => {
     return transformedData;
 }
 
-const getDriversByName = async (req, res) => {
+const getDriverByName = async (req, res) => {
     console.log('Entrando en el controlador getDriversByName');
     try {
         const { name } = req.query;
@@ -80,4 +80,4 @@ const getDriversByName = async (req, res) => {
 
 }
 
-module.exports = getDriversByName;
+module.exports = getDriverByName;
