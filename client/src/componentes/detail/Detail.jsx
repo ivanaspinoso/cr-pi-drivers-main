@@ -1,6 +1,9 @@
 import React from 'react'
+import {useDispatch, useSelector} from "react-redux"
 
-const detail = () => {
+const Detail = () => {
+    const dispatch= useDispatch();
+    
   return (
     <div>
       
@@ -8,4 +11,4 @@ const detail = () => {
   )
 }
 
-export default detail
+export default Detail
