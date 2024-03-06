@@ -13,6 +13,7 @@ module.exports = (sequelize) => {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        field: 'name'
       },
   },{ timestamps: false });//no muestra fecha de modificacion.
 };

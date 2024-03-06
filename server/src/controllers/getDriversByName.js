@@ -5,7 +5,7 @@ const getDriversByName=async(name)=>{
     const allDrivers= await getDrivers();
     const dBdrivers=await getDbDriver();
     return [...allDrivers, ...dBdrivers].filter((driver)=>
-    driver.name.forename.toLowerCase().includes(name.forename.toLowerCase())
+    driver.name.toLowerCase().includes(name.toLowerCase())
     )
 }
 

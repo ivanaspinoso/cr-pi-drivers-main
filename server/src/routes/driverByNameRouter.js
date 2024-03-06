@@ -3,8 +3,10 @@ const driverByNameRouter = Router();
 const { getDriversByName } = require("../controllers/getDriversByName");
 
 driverByNameRouter.get("/", async (req, res) => {
-    const name = req.query.name.toLowerCase();
+    const name = req.query.name;
+    console.log(name)
     try {
+
         const drivers = await getDriversByName(name);
         if (drivers.length) {
             return res.status(200).json(drivers);
