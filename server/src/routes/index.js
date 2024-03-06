@@ -1,14 +1,14 @@
+const getDriverByNameRoute = require("./driverByNameRouter");
+const getDriverById = require("./driversByIdRouter");
+const getTeamsRoute = require("./teamsRouter");
+const getDriverRoute=require("./driversRouter")
 const { Router } = require("express");
-const getDrivers = require('./../controllers/getDrivers');
-const getDriverById = require('./../controllers/getDriversById');
-const getDriverByName = require('./../controllers/getDriversByName'); // Cambia el nombre del controlador aquí
-const getTeams = require('./../controllers/getTeams');
-const postDriver = require('./../controllers/postDrivers');
 
 const router = Router();
 
-router.use("/drivers")
-router.use("/teams")
+router.use("/drivers", getDriverRoute);
+router.use("/drivers/name", getDriverByNameRoute);
+router.use("/drivers/:id", getDriverById);
+router.use("/teams", getTeamsRoute);
 
 module.exports = router;
-
