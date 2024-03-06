@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 const getDriversByNameApi = async (name) => {
     try {
-        const response = await axios.get(`http://localhost:3001/drivers`);
+        const response = await axios.get(`http://localhost:5000/drivers`);
         const { data } = response;
         console.log(data); // Verifica la estructura de los datos devueltos por la API
         const lowerCaseName = name.toLowerCase();
