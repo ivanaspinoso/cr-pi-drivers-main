@@ -1,14 +1,16 @@
-const getDriverByNameRoute = require("./driverByNameRouter");
-const getDriverById = require("./driversByIdRouter");
-const getTeamsRoute = require("./teamsRouter");
-const getDriverRoute=require("./driversRouter")
 const { Router } = require("express");
+const driversRouter = require("./driversRouter");
+const driverByNameRouter = require("./driverByNameRouter");
+const driversByIdRouter = require("./driversByIdRouter");
+const teamsRouter = require("./teamsRouter");
+const deleteRouter = require("./deleteRouter");
 
 const router = Router();
 
-router.use("/drivers", getDriverRoute);
-router.use("/drivers/name", getDriverByNameRoute);
-router.use("/drivers/:id", getDriverById);
-router.use("/teams", getTeamsRoute);
+router.use("/drivers", driversRouter);
+router.use("/drivers/name", driverByNameRouter);
+router.use("/drivers/id", driversByIdRouter); // Cambiado a "/drivers/id/:id"
+router.use("/teams", teamsRouter);
+router.use("/drivers", deleteRouter);
 
 module.exports = router;

@@ -1,14 +1,14 @@
-const {Router}=require("express")
-const {getTeams}=require("../controllers/getTeams")
-const teamsRouter=Router();
+const { Router } = require("express");
+const { getTeams } = require("../controllers/getTeams");
+const teamsRouter = Router();
 
-teamsRouter.get("/",async(req,res)=>{
-    const teams= await getTeams();
+teamsRouter.get("/", async (req, res) => {
     try {
-        res.status(200).send(teams)
+        const teams = await getTeams();
+        res.status(200).send(teams);
     } catch (error) {
-        res.status(404).send(error.message)
+        res.status(404).send(error.message);
     }
-})
+});
 
-module.exports=teamsRouter;
+module.exports = teamsRouter;

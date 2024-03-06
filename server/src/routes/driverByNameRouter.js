@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const driverByNameRouter = Router();
-const getDriverByName = require("../controllers/getDriversByName");
+const { getDriversByName } = require("../controllers/getDriversByName");
 
-driverByNameRouter.get("/name", async (req, res) => {
+driverByNameRouter.get("/", async (req, res) => {
     const name = req.query.name.toLowerCase();
     try {
-        const drivers = await getDriverByName(name);
+        const drivers = await getDriversByName(name);
         if (drivers.length) {
             return res.status(200).json(drivers);
         } else {
