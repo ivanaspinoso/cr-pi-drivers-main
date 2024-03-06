@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Team } = require('./../db');
+const { Team } = require('../db');
 
 const createDB = async () => {
     try {
