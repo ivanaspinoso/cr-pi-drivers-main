@@ -1,5 +1,4 @@
-import {Route} from "react-router-dom";
-import { BrowserRouter,Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Routes,Route} from "react-router-dom";
 import './App.css'
 import Landing from './componentes/landing/Landing';
 import Home from "./componentes/home/Home";
@@ -8,30 +7,19 @@ import Detail from "./componentes/detail/detail";
 import Form from "./componentes/form/Form";
 
 function App() {
-
   return (
-    <BrowserRouter>
-    <div className='App'>
-      <Switch>
-        <Route exact path='/' Component={Landing}/>
-        <Route path='/' render={({location})=>{if (location.pathname !== '/'){
-          return (
-            <>
-            <Nav/>
-            <Route exact path="/home" Component={Home}/>
-            <Route exact path="/drivers/:id" Component={Detail}/>
-            <Route exact path="/form" Component={Form}/>
-            <Route exact path="/form/:id" Component={Form}/>
-            </>
-          )
-        }
-        }
-        }
-        />
-      </Switch>
-    </div>
-    </BrowserRouter>
-  )
+    <Router>
+      <div className='App'>
+        <Routes>
+          <Route exact path='/' element={<Landing />} />
+          <Route path='/*' element={<Nav />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/drivers/:id' element={<Detail />} />
+          <Route path='/form' element={<Form />} />
+          <Route path='/form/:id' element={<Form />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
-
-export default App
+export default App;
