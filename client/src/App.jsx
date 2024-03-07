@@ -1,5 +1,5 @@
-import {BrowserRouter as Router, Routes,Route} from "react-router-dom";
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import './App.css';
 import Landing from './componentes/landing/Landing';
 import Home from "./componentes/home/Home";
 import Nav from "./componentes/nav/Nav";
@@ -10,13 +10,13 @@ function App() {
   return (
     <Router>
       <div className='App'>
+        <Nav /> {/* Muestra el componente Nav en todas las páginas */}
         <Routes>
           <Route exact path='/' element={<Landing />} />
-          <Route path='/*' element={<Nav />} />
           <Route path='/home' element={<Home />} />
           <Route path='/drivers/:id' element={<Detail />} />
           <Route path='/form' element={<Form />} />
-          <Route path='/form/:id' element={<Form />} />
+          {/* <Route path='/form/:id' element={<Form />} /> */}
         </Routes>
       </div>
     </Router>

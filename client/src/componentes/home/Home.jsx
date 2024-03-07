@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { filterByBirthdate, filterByName, filterByOrigin, filterByTeam, getByName, getDrivers, getTeams } from '../../redux/actions/actions'
+import { filterByBirthdate, filterByName, filterByOrigin, filterByTeam, getByName, getDrivers, getTeams } from './actions';
 import Searchbar from '../searchbar/Searchbar'
 
 const Home = () => {

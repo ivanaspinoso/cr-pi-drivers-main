@@ -8,10 +8,11 @@ const Form = () => {
   const [input, setInput] = useState({
     id: '',
     name: '',
-    description: '',
-    image: '',
+    lastName: '',
     nationality: '',
+    image: '',
     birthdate: '',
+    description: '',
     teams: [],
   });
 
@@ -22,10 +23,6 @@ const Form = () => {
   const teams = useSelector((state) => state.teams);
   const [selectedTeams, setSelectedTeams] = useState([]);
   const [errors, setErrors] = useState({});
-  const [filter] = useState('');
-  const filteredTeams = teams?.filter((team) =>
-    team.name.toLowerCase().includes(filter.toLowerCase())
-  );
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,12 +30,6 @@ const Form = () => {
       ...prevInput,
       [name]: value,
     }));
-
-    const updatedErrors = { ...errors, [name]: validate(name, value) };
-    setErrors(updatedErrors);
-
-    const hasErrors = Object.values(updatedErrors).some((error) => !!error);
-    crearButtonRef.current.disabled = hasErrors;
   };
 
   const handleSelect = (event) => {
@@ -73,10 +64,11 @@ const Form = () => {
     setInput({
       id: '',
       name: '',
-      description: '',
-      image: '',
+      lastName: '',
       nationality: '',
+      image: '',
       birthdate: '',
+      description: '',
       teams: [],
     });
     setSelectedTeams([]);
@@ -98,17 +90,43 @@ const Form = () => {
             onChange={handleChange}
             placeholder="Nombre del conductor"
           />
-          {errors.name && <p>{errors.name}</p>}
         </div>
-        {/* Agrega más campos de formulario según tus necesidades */}
         <div>
-          <label>Descripción:</label>
+          <label>Apellido:</label>
           <input
             type="text"
+            value={input.lastName}
+            name="lastName"
+            onChange={handleChange}
+            placeholder="Apellido del conductor"
+          />
+        </div>
+        <div>
+          <label>Nacionalidad:</label>
+          <input
+            type="text"
+            value={input.nationality}
+            name="nationality"
+            onChange={handleChange}
+            placeholder="Nacionalidad del conductor"
+          />
+        </div>
+        <div>
+          <label>Fecha de Nacimiento:</label>
+          <input
+            type="date"
+            value={input.birthdate}
+            name="birthdate"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label>Descripción:</label>
+          <textarea
             value={input.description}
             name="description"
             onChange={handleChange}
-            placeholder="Descripción"
+            placeholder="Descripción del conductor"
           />
         </div>
         <div>
@@ -121,19 +139,18 @@ const Form = () => {
             placeholder="URL de la imagen"
           />
         </div>
-        {/* Más campos de formulario según sea necesario */}
         <div>
           <label>Equipo:</label>
           <select id="teams" onChange={handleSelect}>
             <option value="">Seleccionar</option>
-            {filteredTeams?.map((team) => (
+            {teams.map((team) => (
               <option key={team.id} value={team.name}>
                 {team.name}
               </option>
             ))}
           </select>
           <div>
-            {selectedTeams?.map((team) => (
+            {selectedTeams.map((team) => (
               <div key={team.id}>
                 <span>{team.name}</span>
                 <button type="button" onClick={() => handleRemove(team)}>
