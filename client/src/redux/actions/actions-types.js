@@ -1,6 +1,11 @@
-export const FILTER_BY_TEAM = "FILTER_BY_TEAM"; // Filtrar drivers por equipo
-export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN"; // Filtrar drivers por origen (API o base de datos)
-export const SORT_BY_NAME_ASC = "SORT_BY_NAME_ASC"; // Ordenar drivers por nombre ascendente
-export const SORT_BY_NAME_DESC = "SORT_BY_NAME_DESC"; // Ordenar drivers por nombre descendente
-export const SORT_BY_BIRTHDATE_ASC = "SORT_BY_BIRTHDATE_ASC"; // Ordenar drivers por fecha de nacimiento ascendente
-export const SORT_BY_BIRTHDATE_DESC = "SORT_BY_BIRTHDATE_DESC"; // Ordenar drivers por fecha de nacimiento descendente
+export const GET_DRIVERS = "GET_DRIVERS"; 
+export const GET_TEAMS = "GET_TEAMS"; 
+export const GET_BY_NAME = "GET_BY_NAME"; 
+export const GET_BY_ID = "GET_BY_ID"; 
+export const POST_DRIVER = "POST_DRIVER"; 
+export const FILTER_BY_TEAM = "FILTER_BY_TEAM";
+export const FILTER_BY_BIRTHDATE="FILTER_BY_BIRTHDATE"
+export const FILTER_BY_ORIGIN="FILTER_BY_ORIGIN"
+export const FILTER_BY_NAME="FILTER_BY_NAME"
+export const DELETE_DRIVERS="DELETE_DRIVERS"
+export const DELETE_DRIVER_ID="DELETE_DRIVER_ID"
