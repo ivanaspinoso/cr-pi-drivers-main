@@ -15,7 +15,7 @@ import axios from "axios";
 
 const REACT_APP_URL_HOST="http://localhost:3001"
 
-export const getDogs=()=>{
+export const getDrivers=()=>{
     return async (dispatch)=>{
         const response= await axios.get(`${REACT_APP_URL_HOST}/drivers`);
         return dispatch({
