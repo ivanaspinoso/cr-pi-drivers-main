@@ -1,4 +1,6 @@
-import { GET_TEAMS,GET_BY_ID,GET_BY_NAME,GET_DRIVERS,POST_DRIVER,DELETE_DRIVERS,DELETE_DRIVER_ID } from "./actions-types";
+import { GET_TEAMS,GET_BY_ID,GET_BY_NAME,GET_DRIVERS,POST_DRIVER,DELETE_DRIVERS,DELETE_DRIVER_ID,FILTER_BY_BIRTHDATE,FILTER_BY_NAME,FILTER_BY_TEAM,FILTER_BY_ORIGIN } from "./actions-types";
+import axios from 'axios';
+const REACT_APP_URL_HOST="http://localhost:3001"
 
 export const getDrivers = () => {
     return async (dispatch) => {
@@ -66,6 +68,34 @@ export const getDrivers = () => {
     };
   };
   
+  export const filterByBirthdate=(payload)=>{
+    return{
+      type:FILTER_BY_BIRTHDATE,
+      payload,
+    }
+  }
+
+  export const filterByName=(payload)=>{
+    return{
+      type:FILTER_BY_NAME,
+      payload,
+    }
+  }
+
+  export const filteredByOrigin=(payload)=>{
+    return{
+      type:FILTER_BY_ORIGIN,
+      payload,
+    }
+  }
+
+  export const filterByTeam=(payload)=>{
+    return{
+      type:FILTER_BY_TEAM,
+      payload,
+    }
+  }
+
   export const deleteDriver = (id) => async (dispatch) => {
     try {
       const response = await axios.delete(`${REACT_APP_URL_HOST}/drivers/${id}`);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { filterByBirthdate, filterByName, filterByOrigin, filterByTeam, getByName, getDrivers, getTeams } from './actions';
+import { filterByBirthdate, filterByName, filteredByOrigin, filterByTeam, getByName, getDrivers, getTeams } from '../../redux/actions/actions';
 import Searchbar from '../searchbar/Searchbar'
 
 const Home = () => {
@@ -34,7 +34,7 @@ const Home = () => {
         dispatch(getDrivers());
         dispatch(filterByName(""))
         dispatch(filterByBirthdate(""))
-        dispatch(filterByOrigin(""));
+        dispatch(filteredByOrigin(""));
         dispatch(filterByTeam(""))
         setSelectedBirthdateFilter("");
         setSelectedNameFilter("");
@@ -53,7 +53,7 @@ const Home = () => {
         event.prevenDefault();
         resetPagination();
         setSelectedOriginFilter(event.target.value);
-        dispatch(filterByOrigin(event.target.value))
+        dispatch(filteredByOrigin(event.target.value))
     }
 
     const handleFilterByTeams=(event)=>{
