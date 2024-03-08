@@ -2,7 +2,7 @@ const { Router } = require("express");
 const deleteRouter = Router();
 const { deleteDriver } = require("../controllers/deleteDriver");
 
-deleteRouter.delete("/:id", async (req, res) => {
+deleteRouter.delete("/delete/:id", async (req, res) => {
     const id = req.params.id;
     try {
         const driver = await deleteDriver(id);

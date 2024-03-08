@@ -2,6 +2,7 @@ import { GET_TEAMS,GET_BY_ID,GET_BY_NAME,GET_DRIVERS,FILTER_BY_BIRTHDATE,FILTER_
 
 const initialState = {
     drivers: [],
+    driver: undefined,
     driversCopy: [],
     teams: [],
     details: [],
@@ -24,7 +25,7 @@ const reducer = (state = initialState, action) => {
         case GET_BY_NAME:
             return {
                 ...state,
-                drivers: action.payload,
+                driver: action.payload,
             };
         case GET_BY_ID:
             return {

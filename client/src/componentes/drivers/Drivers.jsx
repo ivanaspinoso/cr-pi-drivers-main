@@ -2,8 +2,7 @@ import React, { useState,useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { deleteDriver } from '../../redux/actions/actions';
 import { Link } from 'react-router-dom';
-const Drivers = ({id,name,forename,surname,teams,birthdate}) => {
-
+const Drivers = ({id,name,surname,teams,birthdate,image, createInDb}) => {
   const[, setDeleted]=useState(false);
   const [showConfirmation,setShowConfirmation]=useState(false);
   const dispatch=useDispatch();
@@ -29,26 +28,27 @@ const Drivers = ({id,name,forename,surname,teams,birthdate}) => {
     }
   },[timer])
   return (
-    <div className={styles.driverCard}>
-      <div className={styles.content}>
-        <Link to={`/drivers/${id}`} className={styles.link}>
-          <h3 className={styles.title}>{forename} {surname}</h3>
+    <div >
+      <div >
+        <Link to={`/drivers/${id}`} >
+          <h3 >{name} {surname}</h3>
         </Link>
-        <div className={styles.imageContainer}>
-          <img className={styles.image} src={image} alt={`${forename} ${surname}`} />
+        <div >
+          <img src={image} alt={`${name} ${surname}`} />
+
         </div>
-        <p className={styles.info}>Fecha de nacimiento: {dob}</p>
-        <p className={styles.info}>Equipos: {teams.join(", ")}</p>
+        <p >Fecha de nacimiento: {birthdate}</p>
+        <p >Equipos: {teams.join(", ")}</p>
         {createInDb && (
           <button
-            className={styles.deleteButton}
+            
             onClick={() => handleDeleteDriver(id)}
           >
             Eliminar
           </button>
         )}
         {showConfirmation && (
-          <p className={styles.confirmationMessage}>
+          <p >
             El conductor fue eliminado exitosamente
           </p>
         )}

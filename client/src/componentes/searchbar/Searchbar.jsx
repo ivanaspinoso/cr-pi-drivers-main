@@ -1,46 +1,40 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getByName } from '../../redux/actions/actions';
 
-const Searchbar = ({onSearch}) => {
-  const dispatch=useDispatch();
-  const [searchName,setSearchName]=useState("")
-  const [error, setError]=useState("")
+const Searchbar = () => {
+ const dispatch = useDispatch();
+ const [searchName, setSearchName] = useState("");
+ const [error, setError] = useState("");
 
-  const handleOnChange =(event)=>{
-    setSearchName(event.target.value)
-    setError("")
-  }
+ const handleOnChange = (event) => {
+    setSearchName(event.target.value);
+    setError("");
+ };
 
-  const handleSearch=async()=>{
-    const search = searchName.trim().toLowerCase();
-    if(!search){
-      setError("Por favor ingrese un nombre")
+ const handleSearch = () => {
+    const search = searchName.trim();
+    if (!search) {
+      setError("Por favor ingrese un nombre");
       return;
-    } else if(!search.match(/^[a-zA-Z\s]+$/)){
-      setError("Por favor ingrese valor alfabeticos")
+    } else if (!search.match(/^[a-zA-Z\s]+$/)) {
+      setError("Por favor ingrese valor alfabéticos");
       return;
     }
 
-   dispatch(getByName(search))
-   .then(()=>{
-    onSearch(search);
+    dispatch(getByName(search));
     setSearchName("");
-   })
-   .catch(()=>{
-    setError("Ha ocurrido un error en la busqueda")
-   })
-  };
+ };
 
-  return (
+ return (
     <div>
-      <input type="text" onChange={handleOnChange} />
+      <input type="text" value={searchName} onChange={handleOnChange} />
       <button onClick={handleSearch} disabled={!searchName}>
         Search
       </button>
       {error && <p>{error}</p>}
     </div>
-  )
-}
+ );
+};
 
 export default Searchbar;

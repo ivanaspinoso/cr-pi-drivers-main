@@ -18,10 +18,10 @@ const Detail = () => {
   return (
     <div>
       
-     <h1>{driver?.name?.forename}</h1> 
+     <h1>{driver.name?.forename}</h1> 
      <h1> {driver?.name?.surname}</h1>
      <div>
-      <img src={driver?.image?.url} alt={driver.name} />
+      <img src={driver.image?.url} alt={driver.name} />
      </div>
      <p>Team:{driver.teams}</p>
      <p>Nacionalidad:{driver.nationality}</p>

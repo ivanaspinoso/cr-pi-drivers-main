@@ -36,24 +36,23 @@ const Form = () => {
   const handleSelect = (event) => {
     const selectedTeam = event.target.value;
     const selectedTeamObject = teams.find((team) => team.name === selectedTeam);
-
+   
     if (
-      !input.teams.includes(selectedTeam) &&
-      !selectedTeams.some((team) => team.name === selectedTeam)
+       !selectedTeams.some((team) => team.name === selectedTeam)
     ) {
-      setInput((prevInput) => ({
-        ...prevInput,
-        teams: [...prevInput.teams, selectedTeam],
-        teams: [...prevInput.teams, selectedTeamObject],
-      }));
-      setSelectedTeams((prevSelectedTeams) => [...prevSelectedTeams, selectedTeamObject]);
+       setInput((prevInput) => ({
+         ...prevInput,
+         teams: [...prevInput.teams, selectedTeamObject], // Agrega el objeto completo del equipo
+       }));
+       setSelectedTeams((prevSelectedTeams) => [...prevSelectedTeams, selectedTeamObject]);
     } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        teams: 'Este equipo ya ha sido seleccionado',
-      }));
+       setErrors((prevErrors) => ({
+         ...prevErrors,
+         teams: 'Este equipo ya ha sido seleccionado',
+       }));
     }
-  };
+   };
+   
 
   const handleSubmit = (event) => {
     event.preventDefault();

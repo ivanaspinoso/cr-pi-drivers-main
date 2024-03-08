@@ -67,4 +67,4 @@ const Pagination = ({drivers, driversPerPage,currentPage,pagination}) => {
   )
 }
 
-export default Pagination
+export default Pagination;
