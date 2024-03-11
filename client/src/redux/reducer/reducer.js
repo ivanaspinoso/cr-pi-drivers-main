@@ -53,30 +53,32 @@ const reducer = (state = initialState, action) => {
                 drivers: filterDriver.concat(filterdB),
                 error: null,
             };
-        case FILTER_BY_BIRTHDATE:
-            const sortedDriversByBirthdate = [...state.drivers];
-            const birthdateAscendingOrder = action.payload === "min";
-            sortedDriversByBirthdate.sort((first, second) => {
-                const dateA = new Date(first.dob);
-                const dateB = new Date(second.dob);
-                return birthdateAscendingOrder ? dateA - dateB : dateB - dateA;
-            });
-            return {
-                ...state,
-                drivers: sortedDriversByBirthdate,
-            };
-        case FILTER_BY_NAME:
-            const filteredByName = state.driversCopy.filter(driver => driver.name.toLowerCase().includes(action.payload.toLowerCase()));
-            return {
-                ...state,
-                drivers: filteredByName,
-            };
+            case FILTER_BY_BIRTHDATE:
+                // Asumiendo que action.payload es "asc" o "desc" para ordenar por fecha de nacimiento
+                const sortedDriversByBirthdate = [...state.drivers].sort((a, b) => {
+                    const dateA = new Date(a.dob);
+                    const dateB = new Date(b.dob);
+                    return action.payload === "asc" ? dateA - dateB : dateB - dateA;
+                });
+                return {
+                    ...state,
+                    drivers: sortedDriversByBirthdate,
+                    driversCopy: sortedDriversByBirthdate, // Asegurarse de que driversCopy se actualice también
+                };
+        case FILTER_BY_TEAM:
+                    const filteredByTeam = state.drivers.filter(driver => driver.teams.includes(action.payload) || action.payload === "All");
+                    return {
+                        ...state,
+                        drivers: filteredByTeam,
+                        driversCopy: filteredByTeam, // Asegurarse de que driversCopy se actualice también
+                    };
         case FILTER_BY_ORIGIN:
-            const filteredByOrigin = action.payload === "API" ? state.driversCopy.filter(driver => driver.origin === "API") : state.driversCopy.filter(driver => driver.origin !== "API");
-            return {
-                ...state,
-                drivers: filteredByOrigin,
-            };
+                const filteredByOrigin = state.drivers.filter(driver => driver.origin === action.payload || action.payload === "all");
+                return {
+                    ...state,
+                    drivers: filteredByOrigin,
+                    driversCopy: filteredByOrigin, // Asegurarse de que driversCopy se actualice también
+                };
         case DELETE_DRIVERS:
             // Handle deletion of drivers from state
             return {

@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteDriver } from '../../redux/actions/actions';
 import { Link } from 'react-router-dom';
-import styles from './Drivers.module.css'; // Asegúrate de que la ruta sea correcta
+import styles from './Drivers.module.css';
 
 const Drivers = ({ id, name, surname, teams, dob, image, createInDb }) => {
- const [, setDeleted] = useState(false);
+ const [deleted, setDeleted] = useState(false);
  const [showConfirmation, setShowConfirmation] = useState(false);
  const dispatch = useDispatch();
- let timer;
 
- const handleDeleteDriver = async (id) => {
+ const handleDeleteDriver = useCallback(async (id) => {
     try {
-      dispatch(deleteDriver(id));
+      await dispatch(deleteDriver(id));
       setDeleted(true);
       setShowConfirmation(true);
-      timer = setTimeout(() => {
-        setShowConfirmation(false);
-        window.location.reload();
-      }, 2000);
     } catch (error) {
       console.error(error);
     }
- };
+ }, [dispatch]);
 
  useEffect(() => {
-    return () => {
-      clearTimeout(timer);
-    };
- }, [timer]);
+    if (deleted) {
+      const timer = setTimeout(() => {
+        setShowConfirmation(false);
+        // Aquí podrías actualizar el estado de tu aplicación para reflejar los cambios
+        // en lugar de recargar la página
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+ }, [deleted]);
 
  return (
     <div className={styles.driverCard}>

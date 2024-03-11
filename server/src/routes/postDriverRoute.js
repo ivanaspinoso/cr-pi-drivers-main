@@ -8,7 +8,8 @@ postRouter.post("/", async(req,res)=>{
         description,
         image,
         nationality,
-        dob }=req.body;
+        dob,
+    createInDb }=req.body;
 
         try {
             if (!name || !lastname || !description || !image || !nationality || !dob){
