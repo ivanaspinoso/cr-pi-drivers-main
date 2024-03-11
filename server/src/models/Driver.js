@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    birthdate: {
+    dob: {
       type: DataTypes.DATE,
       allowNull: false,
     },
@@ -40,6 +40,11 @@ module.exports = (sequelize) => {
     },
     teams: {
       type: DataTypes.STRING,
+    },
+    createInDb: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     },
   });
 };

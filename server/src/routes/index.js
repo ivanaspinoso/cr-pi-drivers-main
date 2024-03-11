@@ -10,7 +10,7 @@ const router = Router();
 
 router.use("/drivers", driversRouter);
 router.use("/driversByname", driverByNameRouter);
-router.use("/drivers/:id", driversByIdRouter); // Cambiado a "/drivers/id/:id"
+router.use("/drivers", driversByIdRouter); // Cambiado a "/drivers/id/:id"
 router.use("/teams", teamsRouter);
 router.use("/drivers", deleteRouter);
 // router.use()

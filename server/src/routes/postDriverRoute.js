@@ -8,10 +8,10 @@ postRouter.post("/", async(req,res)=>{
         description,
         image,
         nationality,
-        birthdate }=req.body;
+        dob }=req.body;
 
         try {
-            if (!name || !lastname || !description || !image || !nationality || !birthdate){
+            if (!name || !lastname || !description || !image || !nationality || !dob){
             throw Error("There are missing information to create the driver")
             } else {
                 const newDriver=await postDrivers(
@@ -20,7 +20,7 @@ postRouter.post("/", async(req,res)=>{
                     description,
                     image,
                     nationality,
-                    birthdate,
+                    dob,
                     createInDb
                 );
                 return res.status(200).json(newDriver);

@@ -167,7 +167,7 @@ const Home = () => {
               surname={driver.surname}
               nationality={driver.nationality}
               image={driver.image}
-              birthdate= {driver.birthdate}
+              dob= {driver.dob}
               description= {driver.description}
               teams= {driver.teams}
               createInDb={driver.createInDb}
@@ -179,8 +179,8 @@ const Home = () => {
               name={driver.name}
               surname={driver.surname}
               nationality={driver.nationality}
-              image={driver.image}
-              birthdate= {driver.birthdate}
+              image={driver.image.url}
+              dob= {driver.dob}
               description= {driver.description}
               teams= {driver.teams}
               createInDb={driver.createInDb}

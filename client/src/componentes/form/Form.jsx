@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTeams, postDriver } from '../../redux/actions/actions';
-import axios from "axios"
 
 const Form = () => {
   const crearButtonRef = useRef(null);
@@ -12,7 +11,7 @@ const Form = () => {
     lastName: '',
     nationality: '',
     image: '',
-    birthdate: '',
+    dob: '',
     description: '',
     teams: [],
   });
@@ -67,7 +66,7 @@ const Form = () => {
       lastName: '',
       nationality: '',
       image: '',
-      birthdate: '',
+      dob: '',
       description: '',
       teams: [],
     });
@@ -115,8 +114,8 @@ const Form = () => {
           <label>Fecha de Nacimiento:</label>
           <input
             type="date"
-            value={input.birthdate}
-            name="birthdate"
+            value={input.dob}
+            name="dob"
             onChange={handleChange}
           />
         </div>

@@ -10,10 +10,10 @@ driversByIdRouter.get("/:id", async (req, res) => {
         if (driver) {
             res.status(200).send(driver);
         } else {
-            res.status(404).json({ message: "Driver not found" });
+            res.status(404).json("Driver not found");
         }
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).send(error.message); // Cambiado a 500 para errores del servidor
     }
 });
 

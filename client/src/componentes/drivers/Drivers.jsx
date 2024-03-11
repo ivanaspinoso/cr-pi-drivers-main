@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { deleteDriver } from '../../redux/actions/actions';
 import { Link } from 'react-router-dom';
-const Drivers = ({id,name,surname,teams,birthdate,image, createInDb}) => {
+const Drivers = ({id,name,surname,teams,dob,image, createInDb}) => {
   const[, setDeleted]=useState(false);
   const [showConfirmation,setShowConfirmation]=useState(false);
   const dispatch=useDispatch();
@@ -37,7 +37,7 @@ const Drivers = ({id,name,surname,teams,birthdate,image, createInDb}) => {
           <img src={image} alt={`${name} ${surname}`} />
 
         </div>
-        <p >Fecha de nacimiento: {birthdate}</p>
+        <p >Fecha de nacimiento: {dob}</p>
         <p >Equipos: {teams.join(", ")}</p>
         {createInDb && (
           <button
@@ -58,4 +58,3 @@ const Drivers = ({id,name,surname,teams,birthdate,image, createInDb}) => {
 };
 
 export default Drivers;
-

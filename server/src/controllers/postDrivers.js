@@ -2,9 +2,9 @@ const {Driver,Team}=require('./../db');
 
 const postDrivers = async (req, res) => {
     try {
-        const { name, lastname, description, image, nationality, birthdate, teams } = req.body;
+        const { name, lastname, description, image, nationality, dob, teams,createInDb } = req.body;
 
-        if (!teams?.length || !name || !lastname || !description || !image || !nationality || !birthdate) {
+        if (!teams?.length || !name || !lastname || !description || !image || !nationality || !dob) {
             return res.status(400).json({ error: "Incomplete Driver Data" });
         }
 
@@ -20,7 +20,7 @@ const postDrivers = async (req, res) => {
                 description,
                 image,
                 nationality,
-                birthdate
+                dob
             }
         });
 
