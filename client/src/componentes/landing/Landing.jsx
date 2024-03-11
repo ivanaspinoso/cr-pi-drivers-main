@@ -1,14 +1,20 @@
-import { Link } from "react-router-dom"
+import React from 'react';
+import { Link } from "react-router-dom";
+import styles from './Landing.module.css'; // Asegúrate de que la ruta sea correcta
 
 const Landing = () => {
-  return (
-    <div>
-      <h1>Bienvenido a mi Driver App</h1>
-      <Link to="/home">
-        <button>Enter</button> 
+ return (
+    <div className={styles.container}>
+      <div className={styles.background}></div>
+      <div className={styles.overlay}></div>
+      <div className={styles.content}>
+        <h1 className={styles.title}>Bienvenido a mi Driver App</h1>
+        <Link to="/home" className={styles.link}>
+          <button className={styles.button}>Enter</button> 
         </Link>
+      </div>
     </div>
-  )
+ )
 }
 
-export default Landing
+export default Landing;

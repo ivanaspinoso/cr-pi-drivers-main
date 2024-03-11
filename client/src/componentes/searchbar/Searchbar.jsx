@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getByName } from '../../redux/actions/actions';
+import styles from './Searchbar.module.css'; // Asegúrate de que la ruta sea correcta
 
 const Searchbar = () => {
  const dispatch = useDispatch();
@@ -27,12 +28,21 @@ const Searchbar = () => {
  };
 
  return (
-    <div>
-      <input type="text" value={searchName} onChange={handleOnChange} />
-      <button onClick={handleSearch} disabled={!searchName}>
+    <div className={styles.SearchBarContainer}>
+      <input
+        type="text"
+        value={searchName}
+        onChange={handleOnChange}
+        className={styles.SearchInput}
+      />
+      <button
+        onClick={handleSearch}
+        disabled={!searchName}
+        className={styles.SearchButton}
+      >
         Search
       </button>
-      {error && <p>{error}</p>}
+      {error && <p className={styles.Error}>{error}</p>}
     </div>
  );
 };

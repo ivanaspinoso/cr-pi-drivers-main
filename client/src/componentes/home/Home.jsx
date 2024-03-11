@@ -4,6 +4,7 @@ import { filterByBirthdate, filterByName, filteredByOrigin, filterByTeam, getByN
 import Searchbar from '../searchbar/Searchbar';
 import Drivers from '../drivers/Drivers';
 import Pagination from '../Pagination/Pagination';
+import styles from './Home.module.css';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -84,20 +85,21 @@ const Home = () => {
     };
 
     return (
-      <div >
-        <div >
-          <div >
-            <h1 >¡Bienvenido al mundo de los conductores!</h1>
+      <div className={styles.homeAll}>
+        <div className={styles.homeContainer}>
+          <div className={styles.titleContainer}>
+            <h1 className={styles.title}>¡Bienvenido al mundo de los conductores!</h1>
           </div>
-          <div >
+          <div className={styles.driversContainer}>
             <Searchbar onSearch={handleSearch} />
+            {/* El resto de tu JSX... */}
           </div>
-          <div>
-            <h3 >Ordenar:</h3>
-            <div >
-              <label >Alfabéticamente:</label>
+          <div className={styles.filterContainer}>
+            <h3>Ordenar:</h3>
+            <div className={styles.filterOption}>
+              <label className={styles.filterLabel}>Alfabéticamente:</label>
               <select
-              
+                className={styles.filterSelect}
                 onChange={(event) => handleFilterByName(event)}
                 value={selectedNameFilter}
               >
@@ -106,10 +108,10 @@ const Home = () => {
                 <option value="Dec">Descendente</option>
               </select>
             </div>
-            <div >
-              <label >Fecha de nacimiento:</label>
+            <div className={styles.filterOption}>
+              <label className={styles.filterLabel}>Fecha de nacimiento:</label>
               <select
-                
+                className={styles.filterSelect}
                 onChange={(event) => handleFilterByBirthdate(event)}
                 value={selectedBirthdateFilter}
               >
@@ -118,12 +120,12 @@ const Home = () => {
               </select>
             </div>
           </div>
-          <div >
+          <div className={styles.filterContainer}>
             <h3>Filtrar:</h3>
-            <div >
-              <label >Origen:</label>
+            <div className={styles.filterOption}>
+              <label className={styles.filterLabel}>Origen:</label>
               <select
-                
+                className={styles.filterSelect}
                 onChange={(event) => handleFilteredByOrigin(event)}
                 value={selectedOriginFilter}
               >
@@ -133,26 +135,26 @@ const Home = () => {
                 <option value="created">Creado</option>
               </select>
             </div>
-            <div>
-              <label >Escudería:</label>
+            <div className={styles.filterOption}>
+              <label className={styles.filterLabel}>Escudería:</label>
               <select
-                
+                className={styles.filterSelect}
                 onChange={(event) => handleFilterByTeams(event)}
                 value={selectedTeamFilter}
               >
                 <option value="">Seleccionar</option>
                 <option value="All">Todas las escuderías</option>
                 {teamState?.sort().map((team) => (
-                  <option key={team.id} value={team.name}>
-                   {team.name}
-                  </option>
+                 <option key={team.id} value={team.name}>
+                    {team.name}
+                 </option>
                 ))}
               </select>
             </div>
           </div>
-          <div >
+          <div className={styles.reloadButtonContainer}>
             <button
-             
+              className={styles.reloadButton}
               onClick={(event) => handleClick(event)}
             >
               Eliminar filtros
@@ -166,7 +168,7 @@ const Home = () => {
               name={driver.name}
               surname={driver.surname}
               nationality={driver.nationality}
-              image={driver.image}
+              image={driver.image.url}
               dob= {driver.dob}
               description= {driver.description}
               teams= {driver.teams}
@@ -188,14 +190,13 @@ const Home = () => {
           ))}
         </div>
         <Pagination
- drivers={allDrivers ? allDrivers.length : 0}
- driversPerPage={driversPerPage}
- currentPage={currentPage}
- pagination={pagination}
-/>
+          drivers={allDrivers ? allDrivers.length : 0}
+          driversPerPage={driversPerPage}
+          currentPage={currentPage}
+          pagination={pagination}
+        />
       </div>
-   );
-  };
-  
+    );
+};
   export default Home;
   

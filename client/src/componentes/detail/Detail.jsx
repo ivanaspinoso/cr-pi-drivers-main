@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getById } from '../../redux/actions/actions';
+import styles from './Detail.module.css'; // Asegúrate de que la ruta sea correcta
 
 const Detail = () => {
     const dispatch = useDispatch();
@@ -20,15 +21,15 @@ const Detail = () => {
     const { forename, surname } = driver.name || {};
 
     return (
-        <div>
-            <h1>{surname}</h1>
-            <div>
-                <img src={driver.image.url} alt={`${forename} ${surname}`} />
+        <div className={styles.contentContainer}>
+            <h1 className={styles.titleName}>{surname}</h1>
+            <div className={styles.imageContainer}>
+                <img className={styles.image} src={driver.image.url} alt={`${forename} ${surname}`} />
             </div>
-            <p>Team: {driver.teams}</p>
-            <p>Nacionalidad: {driver.nationality}</p>
-            <p>Descripción: {driver.description}</p>
-            <p>Fecha de nacimiento: {driver.dob}</p>
+            <p className={styles.info}>Team: {driver.teams}</p>
+            <p className={styles.info}>Nacionalidad: {driver.nationality}</p>
+            <p className={styles.info}>Descripción: {driver.description}</p>
+            <p className={styles.info}>Fecha de nacimiento: {driver.dob}</p>
         </div>
     );
 };
