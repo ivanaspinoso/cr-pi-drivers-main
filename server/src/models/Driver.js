@@ -34,17 +34,10 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    createdinDB: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
+  
     teams: {
       type: DataTypes.STRING,
     },
-    createInDb: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true
-    },
+    
   });
 };

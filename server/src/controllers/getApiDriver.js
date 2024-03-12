@@ -10,6 +10,7 @@ const getApiDriver = async () => {
             image: driver.image,
             nationality: driver.nationality,
             dob: driver.dob,
+            origin: 'api',
             teams: driver.teams ? driver.teams.split(',').map(e => e.trim()) : [],
             description: driver.description,
         }));
