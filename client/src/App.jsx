@@ -3,14 +3,14 @@ import './App.css';
 import Landing from './componentes/landing/Landing';
 import Home from "./componentes/home/Home";
 import Nav from "./componentes/nav/Nav";
-import Detail from "./componentes/detail/detail";
+import Detail from "./componentes/detail/Detail";
 import Form from "./componentes/form/Form";
 
 function App() {
   return (
     <Router>
       <div className='App'>
-        <Nav /> {/* Muestra el componente Nav en todas las páginas */}
+        <Nav />
         <Routes>
           <Route exact path='/' element={<Landing />} />
           <Route path='/home' element={<Home />} />

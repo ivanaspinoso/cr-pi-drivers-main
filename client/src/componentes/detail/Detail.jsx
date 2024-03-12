@@ -24,7 +24,7 @@ const Detail = () => {
         <div className={styles.contentContainer}>
             <h1 className={styles.titleName}>{surname}</h1>
             <div className={styles.imageContainer}>
-                <img className={styles.image} src={driver.image.url} alt={`${forename} ${surname}`} />
+                <img className={styles.image} src={driver.image?.url} alt={`${forename} ${surname}`} />
             </div>
             <p className={styles.info}>Team: {driver.teams}</p>
             <p className={styles.info}>Nacionalidad: {driver.nationality}</p>

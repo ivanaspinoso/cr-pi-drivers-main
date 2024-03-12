@@ -10,8 +10,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const allDrivers = useSelector((state) => state.drivers);
     const driver = useSelector((state) => state.driver);
-    console.log(driver, 'driver')
-
+    const driversCopy =useSelector((state)=>state.driversCopy)
     const teamState = useSelector((state) => state.teams);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +22,7 @@ const Home = () => {
 
     const lastDriverIndex = currentPage * driversPerPage;
     const firstDriverIndex = lastDriverIndex - driversPerPage;
-    const currentDrivers = allDrivers ? allDrivers.slice(firstDriverIndex, lastDriverIndex) : [];
+    const currentDrivers = driversCopy ? driversCopy.slice(firstDriverIndex, lastDriverIndex) : [];
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -43,7 +42,7 @@ const Home = () => {
         dispatch(getDrivers());
         dispatch(filterByName(""));
         dispatch(filterByBirthdate(""));
-        dispatch(filteredByOrigin("")); // Corregido el nombre de la función
+        dispatch(filteredByOrigin("")); //Corregido el nombre de la función
         dispatch(filterByTeam(""));
         setSelectedBirthdateFilter("");
         setSelectedNameFilter("");
@@ -62,7 +61,7 @@ const Home = () => {
         event.preventDefault();
         resetPagination();
         setSelectedOriginFilter(event.target.value);
-        dispatch(filteredByOrigin(event.target.value)); // Corregido el nombre de la función
+        dispatch(filteredByOrigin(event.target.value));// Corregido el nombre de la función
     };
 
     const handleFilterByTeams = (event) => {
@@ -162,32 +161,35 @@ const Home = () => {
           </div>
         </div>
         <div>
-          {driver !== undefined && <Drivers
+        {driver ? (
+              <Drivers
               key={driver.id}
               id={driver.id}
               name={driver.name}
               surname={driver.surname}
               nationality={driver.nationality}
               image={driver.image.url}
-              dob= {driver.dob}
-              description= {driver.description}
-              teams= {driver.teams}
-              createInDb={driver.createInDb}
-            />}
-          {currentDrivers?.map((driver) => (
-            <Drivers
-              key={driver.id}
-              id={driver.id}
-              name={driver.name}
-              surname={driver.surname}
-              nationality={driver.nationality}
-              image={driver.image.url}
-              dob= {driver.dob}
-              description= {driver.description}
-              teams= {driver.teams}
+              dob={driver.dob}
+              description={driver.description}
+              teams={driver.teams}
               createInDb={driver.createInDb}
             />
-          ))}
+          ) : (
+            currentDrivers.map((driver) => (
+              <Drivers
+               key={driver.id}
+               id={driver.id}
+               name={driver.name}
+               surname={driver.surname}
+               nationality={driver.nationality}
+               image={driver.image.url}
+               dob={driver.dob}
+               description={driver.description}
+               teams={driver.teams}
+               createInDb={driver.createInDb}
+              />
+            ))
+          )}
         </div>
         <Pagination
           drivers={allDrivers ? allDrivers.length : 0}
@@ -199,3 +201,5 @@ const Home = () => {
     );
 };
   export default Home;
+  
+
