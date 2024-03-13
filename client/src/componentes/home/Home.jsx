@@ -5,8 +5,7 @@ import Searchbar from '../searchbar/Searchbar';
 import Drivers from '../drivers/Drivers';
 import Pagination from '../Pagination/Pagination';
 import styles from './Home.module.css';
-import Filter from '../filters/Filter';
-import OrderSec from '../order/order';
+
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -34,20 +33,24 @@ const Home = () => {
     };
 
 
-    const [filterstate, setFilterstate] = useState({
-      teams: '--Todos--',
-      origin: '--Todos--'
-  });
-
-  const [orderstate, setOrderstate] = useState({
-    tipo: '',
-    asc_desc: ''
-});
-
 useEffect(() => {
   dispatch(getDrivers());
   dispatch(getTeams());
 }, [dispatch]);
+
+const handleClick=(event)=>{
+  event.preventDefault();
+  resetPagination()
+  dispatch(getDrivers());
+  dispatch(filterByBirthdate(""))
+  dispatch(filterByTeam(""))
+  dispatch(filteredByOrigin(""))
+  dispatch(filterByName(""))
+  setSelectedBirthdateFilter("")
+  setSelectedNameFilter("")
+  setSelectedOriginFilter("")
+  setSelectedTeamFilter("")
+}
 
 const handleChange = (e) => {
         const val = e.target.value;
@@ -70,6 +73,13 @@ const handleChange = (e) => {
         resetPagination();
         setSelectedNameFilter(event.target.value);
         dispatch(filterByName(event.target.value));
+    };
+
+    const handleFilterByTeam = (event) => {
+      event.preventDefault();
+      resetPagination();
+      setSelectedTeamFilter(event.target.value);
+      dispatch(filterByTeam(event.target.value));
     };
 
     const handleSearch = (search) => {
@@ -134,7 +144,7 @@ const handleChange = (e) => {
               <label className={styles.filterLabel}>Escudería:</label>
               <select
                 className={styles.filterSelect}
-                onChange={(event) => handleFilterByTeams(event)}
+                onChange={(event) => handleFilterByTeam(event)}
                 value={selectedTeamFilter}
               >
                 <option value="">Seleccionar</option>

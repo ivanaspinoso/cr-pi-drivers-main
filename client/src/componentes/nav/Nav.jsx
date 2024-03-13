@@ -6,9 +6,7 @@ const Nav = () => {
  return (
     <div className={styles.nav}>
       <nav>
-        <Link to="/">
-          <button className={styles.link}> Landing </button>
-        </Link>
+       
         <Link to="/home">
           <button className={styles.link}>
             Home

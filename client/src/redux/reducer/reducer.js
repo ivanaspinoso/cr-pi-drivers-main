@@ -38,7 +38,7 @@ const reducer = (state = initialState, action) => {
                 drivers: [...state.drivers, action.payload],
                 driversCopy: [...state.driversCopy, action.payload], // Asegurarse de que driversCopy se actualice también
             };
-            case 'FILTER_BY_ORIGIN':
+            case FILTER_BY_ORIGIN:
                 // Filtrar por origen, pero mantener una copia de los conductores originales
                 const filteredByOrigin = state.driversCopy.filter(driver => driver.origin === action.payload || action.payload === "all");
                 return {
@@ -46,6 +46,29 @@ const reducer = (state = initialState, action) => {
                   drivers: filteredByOrigin,
                   // No actualizamos driversCopy aquí porque queremos mantener la lista original
                 };
+
+                case FILTER_BY_TEAM:
+    // Suponiendo que quieres aplicar múltiples filtros y mantener un estado separado para el resultado
+    let filteredDrivers = state.driversCopy; // Comienza con los datos originales
+
+    // Aplica el filtro por equipo
+    filteredDrivers = filteredDrivers.filter(driver => {
+        if (driver.teams) {
+            return driver.teams.includes(action.payload) || action.payload === "All";
+        }
+        return false;
+    });
+
+    // Aquí podrías aplicar más filtros a filteredDrivers si es necesario
+
+    return {
+        ...state,
+        drivers: filteredDrivers, // Actualiza el estado con los conductores filtrados
+    };
+
+
+
+
                 case FILTER_BY_BIRTHDATE:
                     // Asumiendo que action.payload es "asc", "desc" o "sin orden" para ordenar por fecha de nacimiento
                     let sortedDriversByBirthdate;

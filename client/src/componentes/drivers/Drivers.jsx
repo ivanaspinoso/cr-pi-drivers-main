@@ -23,8 +23,7 @@ const Drivers = ({ id, name, surname, teams, dob, image, createInDb }) => {
     if (deleted) {
       const timer = setTimeout(() => {
         setShowConfirmation(false);
-        // Aquí podrías actualizar el estado de tu aplicación para reflejar los cambios
-        // en lugar de recargar la página
+       
       }, 2000);
       return () => clearTimeout(timer);
     }
