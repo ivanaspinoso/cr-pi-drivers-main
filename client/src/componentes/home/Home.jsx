@@ -5,6 +5,8 @@ import Searchbar from '../searchbar/Searchbar';
 import Drivers from '../drivers/Drivers';
 import Pagination from '../Pagination/Pagination';
 import styles from './Home.module.css';
+import Filter from '../filters/Filter';
+import OrderSec from '../order/order';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const Home = () => {
 
     const lastDriverIndex = currentPage * driversPerPage;
     const firstDriverIndex = lastDriverIndex - driversPerPage;
-    const currentDrivers = driversCopy ? driversCopy.slice(firstDriverIndex, lastDriverIndex) : [];
+    const currentDrivers = allDrivers ? allDrivers.slice(firstDriverIndex, lastDriverIndex) : [];
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -31,46 +33,38 @@ const Home = () => {
         setCurrentPage(1);
     };
 
-    useEffect(() => {
-        dispatch(getDrivers());
-        dispatch(getTeams());
-    }, [dispatch]);
 
-    const handleClick = (event) => {
-        event.preventDefault();
-        resetPagination();
-        dispatch(getDrivers());
-        dispatch(filterByName(""));
-        dispatch(filterByBirthdate(""));
-        dispatch(filteredByOrigin("")); //Corregido el nombre de la función
-        dispatch(filterByTeam(""));
-        setSelectedBirthdateFilter("");
-        setSelectedNameFilter("");
-        setSelectedOriginFilter("");
-        setSelectedTeamFilter("");
-    };
+    const [filterstate, setFilterstate] = useState({
+      teams: '--Todos--',
+      origin: '--Todos--'
+  });
 
-    const handleFilterByBirthdate = (event) => {
-        event.preventDefault();
-        resetPagination();
-        setSelectedBirthdateFilter(event.target.value);
-        dispatch(filterByBirthdate(event.target.value));
-    };
+  const [orderstate, setOrderstate] = useState({
+    tipo: '',
+    asc_desc: ''
+});
 
+useEffect(() => {
+  dispatch(getDrivers());
+  dispatch(getTeams());
+}, [dispatch]);
+
+const handleChange = (e) => {
+        const val = e.target.value;
+        dispatch(filterByName(val));
+    }
     const handleFilteredByOrigin = (event) => {
-        event.preventDefault();
-        resetPagination();
-        setSelectedOriginFilter(event.target.value);
-        dispatch(filteredByOrigin(event.target.value));// Corregido el nombre de la función
-    };
-
-    const handleFilterByTeams = (event) => {
-        event.preventDefault();
-        resetPagination();
-        setSelectedTeamFilter(event.target.value);
-        dispatch(filterByTeam(event.target.value));
-    };
-
+      event.preventDefault();
+      resetPagination();
+      setSelectedOriginFilter(event.target.value);
+      dispatch(filteredByOrigin(event.target.value));// Corregido el nombre de la función
+  };
+  const handleFilterByBirthdate = (event) => {
+    event.preventDefault();
+    resetPagination();
+    setSelectedBirthdateFilter(event.target.value);
+    dispatch(filterByBirthdate(event.target.value));
+};
     const handleFilterByName = (event) => {
         event.preventDefault();
         resetPagination();
@@ -91,7 +85,7 @@ const Home = () => {
           </div>
           <div className={styles.driversContainer}>
             <Searchbar onSearch={handleSearch} />
-            {/* El resto de tu JSX... */}
+       
           </div>
           <div className={styles.filterContainer}>
             <h3>Ordenar:</h3>
@@ -103,8 +97,8 @@ const Home = () => {
                 value={selectedNameFilter}
               >
                 <option value="">Seleccionar</option>
-                <option value="Asc">Ascendente</option>
-                <option value="Dec">Descendente</option>
+                <option value="asc">Ascendente A-Z</option>
+                <option value="desc">Descendente Z-A</option>
               </select>
             </div>
             <div className={styles.filterOption}>
@@ -115,7 +109,9 @@ const Home = () => {
                 value={selectedBirthdateFilter}
               >
                 <option value="">Seleccionar</option>
-                <option value="fecha">Fecha:</option>
+                <option value="sin orden">Sin orden</option>
+                <option value="asc">Birthday Asc</option>
+                <option value="desc">Birthday Desc</option>
               </select>
             </div>
           </div>
@@ -201,3 +197,5 @@ const Home = () => {
     );
 };
   export default Home;
+  
+
