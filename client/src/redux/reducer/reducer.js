@@ -96,7 +96,7 @@ const reducer = (state = initialState, action) => {
                     case FILTER_BY_NAME:
                         // Asumiendo que action.payload es "asc" o "desc" para ordenar por nombre
                         const sortedDriversByName = [...state.driversCopy].sort((a, b) => {
-                            return action.payload === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+                            return action.payload === "asc" ? a.forename.localeCompare(b.forename) : b.forename.localeCompare(a.forename);
                         });
                         return {
                             ...state,

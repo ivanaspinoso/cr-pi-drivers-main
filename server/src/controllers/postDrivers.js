@@ -2,22 +2,22 @@ const { Driver, Team } = require('./../db');
 
 const postDrivers = async (req, res) => {
     try {
-        const { name, lastname, description, image, nationality, dob, teams } = req.body;
+        const { forename, surname, description, image, nationality, dob, teams } = req.body;
 
-        if (!teams?.length || !name || !lastname || !description || !image || !nationality || !dob) {
-            return res.status(400).json({ error: 'Incomplete Driver Data', missingFields: ['teams', 'name', 'lastname', 'description', 'image', 'nationality', 'dob'].filter(field => !req.body[field]) });
+        if (!teams?.length || !forename || !surname || !description || !image || !nationality || !dob) {
+            return res.status(400).json({ error: 'Incomplete Driver Data', missingFields: ['teams', 'forename', 'surname', 'description', 'image', 'nationality', 'dob'].filter(field => !req.body[field]) });
         }
         
 
         const teamIds = await Promise.all(teams.map(async (teamName) => {
-            const team = await Team.findOne({ where: { name: teamName } });
+            const team = await Team.findOne({ where: { forename: teamName } });
             return team.id;
         }));
 
         const [newDriver, created] = await Driver.findOrCreate({
             where: {
-                name,
-                lastname,
+                forename,
+                surname,
                 description,
                 image,
                 nationality,
