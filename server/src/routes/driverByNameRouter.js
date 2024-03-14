@@ -3,7 +3,6 @@ const driverByNameRouter = Router();
 const { getDriversByName } = require("../controllers/getDriversByName");
 
 driverByNameRouter.get("/", async (req, res) => {
-
     const name = req.query.name;
     try {
 

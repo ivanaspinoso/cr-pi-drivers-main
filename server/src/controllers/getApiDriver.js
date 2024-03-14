@@ -3,11 +3,10 @@ const axios = require("axios")
 const getApiDriver = async () => {
     try {
         const response = await axios.get(`http://localhost:5000/drivers`);
-        console.log(response, 'reponse')
 
         return response.data.map(driver => ({
             id: driver.id,
-            name: driver.name.forename,
+            forename: driver.name.forename,
             surname: driver.name.surname,
             image: driver.image,
             nationality: driver.nationality,

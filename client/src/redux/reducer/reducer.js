@@ -1,4 +1,4 @@
-import { GET_TEAMS, GET_BY_ID, GET_BY_NAME, GET_DRIVERS, FILTER_BY_BIRTHDATE, FILTER_BY_NAME, FILTER_BY_ORIGIN, FILTER_BY_TEAM, DELETE_DRIVERS, DELETE_DRIVER_ID, POST_DRIVER } from "../actions/actions-types";
+import { GET_TEAMS, GET_BY_ID, GET_BY_NAME, GET_DRIVERS, FILTER_BY_BIRTHDATE, FILTER_BY_NAME, FILTER_BY_ORIGIN, FILTER_BY_TEAM, DELETE_DRIVERS, DELETE_DRIVER_ID, POST_DRIVER, RESET_DRIVERS } from "../actions/actions-types";
 
 const initialState = {
     drivers: [],
@@ -32,6 +32,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 details: action.payload,
             };
+            case RESET_DRIVERS:
+                return {
+                    ...state,
+                    driver: undefined,
+                };
         case POST_DRIVER:
             return {
                 ...state,

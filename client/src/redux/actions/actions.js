@@ -1,4 +1,4 @@
-import { GET_TEAMS, GET_BY_ID, GET_BY_NAME, GET_DRIVERS, POST_DRIVER, DELETE_DRIVERS, DELETE_DRIVER_ID, FILTER_BY_BIRTHDATE, FILTER_BY_NAME, FILTER_BY_TEAM, FILTER_BY_ORIGIN } from "./actions-types";
+import { GET_TEAMS, GET_BY_ID, GET_BY_NAME, GET_DRIVERS, POST_DRIVER, DELETE_DRIVERS, DELETE_DRIVER_ID, FILTER_BY_BIRTHDATE, FILTER_BY_NAME, FILTER_BY_TEAM, FILTER_BY_ORIGIN, RESET_DRIVERS } from "./actions-types";
 import axios from 'axios';
 const REACT_APP_URL_HOST = "http://localhost:3001";
 
@@ -36,7 +36,7 @@ export const getByName = (name) => async (dispatch) => {
   try {
      // Simulando una llamada a la API
      const response = await axios(`http://localhost:3001/driversByname?name=${name}`);
-     const data = await response.data[0];
+     const data = await response.data;
  
      // Despacha una acción para actualizar el estado con los datos obtenidos
      dispatch({ type: GET_BY_NAME, payload: data });
@@ -57,6 +57,16 @@ export const getById = (id) => {
     }
  };
 };
+
+export const resetDriver = (id) => {
+   return async (dispatch) => {
+      try {
+        dispatch({ type: RESET_DRIVERS});
+      } catch (error) {
+        return { error: true, message: "Error resetaer driver" };
+      }
+   };
+  };
 
 export const postDriver = (driver) => {
  return async (dispatch) => {

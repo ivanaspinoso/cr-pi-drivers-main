@@ -51,7 +51,7 @@ export const Form = () => {
         const selectedTeamObject = teams.find(
             (team) => team.name === selectedTeams
         );
-
+    
         if (!input.teams.includes(selectedTeams) && !selectedTeam.some((team) => team.name === selectedTeams)) {
             setInput((prevInput) => ({
                 ...prevInput,
@@ -64,15 +64,16 @@ export const Form = () => {
             ]);
             setErrors((prevErrors) => ({
                 ...prevErrors,
-                filterTeams: "",
+                filterTeams: "", // Limpiar el error para filterTeams
             }));
         } else {
             setErrors((prevErrors) => ({
                 ...prevErrors,
-                filterTeams: "Este equipo ya ha sido seleccionado",
+                filterTeams: "Este equipo ya ha sido seleccionado", // Establecer el error para filterTeams
             }));
         }
     };
+    
 
     const handleSubmit = (event) => {
         event.preventDefault();

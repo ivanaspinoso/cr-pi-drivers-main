@@ -23,7 +23,12 @@ const Home = () => {
     const lastDriverIndex = currentPage * driversPerPage;
     const firstDriverIndex = lastDriverIndex - driversPerPage;
     const currentDrivers = allDrivers ? allDrivers.slice(firstDriverIndex, lastDriverIndex) : [];
-    console.log(driversCopy,'dr')
+
+    useEffect(() => {
+        dispatch(getDrivers());
+        dispatch(getTeams());
+    }, [])
+
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -86,6 +91,7 @@ const Home = () => {
 
     const handleSearch = (search) => {
         resetPagination();
+        console.log('handlesearch')
         dispatch(getByName(search));
     };
 
@@ -168,35 +174,37 @@ const Home = () => {
                 </div>
             </div>
             <div>
-                {driver ? (
-                    <Drivers
-                        key={driver.id}
-                        id={driver.id}
-                        name={driver.name} // Cambiado a forename
-                        surname={driver.surname} // Cambiado a surname
-                        nationality={driver.nationality}
-                        image={driver.image.url}
-                        dob={driver.dob}
-                        description={driver.description}
-                        teams={driver.teams}
-                        createInDb={driver.createInDb}
-                    />
-                ) : (
-                    currentDrivers.map((driver) => (
-                        <Drivers
-                            key={driver.id}
-                            id={driver.id}
-                            name={driver.name} // Cambiado a forename
-                            surname={driver.surname} // Cambiado a surname
-                            nationality={driver.nationality}
-                            image={driver.image.url}
-                            dob={driver.dob}
-                            description={driver.description}
-                            teams={driver.teams}
-                            createInDb={driver.createInDb}
-                        />
-                    ))
-                )}
+            {driver?.length >= 1 ? (
+    driver.map((driverItem) => (
+        <Drivers
+            key={driverItem.id}
+            id={driverItem.id}
+            forename={driverItem.forename}
+            surname={driverItem.surname}
+            nationality={driverItem.nationality}
+            image={driverItem.image.url}
+            dob={driverItem.dob}
+            description={driverItem.description}
+            teams={driverItem.teams}
+            createInDb={driverItem.createInDb}
+        />
+    ))
+) : (
+    currentDrivers.map((driver) => (
+        <Drivers
+            key={driver.id}
+            id={driver.id}
+            forename={driver.forename}
+            surname={driver.surname}
+            nationality={driver.nationality}
+            image={driver.image.url}
+            dob={driver.dob}
+            description={driver.description}
+            teams={driver.teams}
+            createInDb={driver.createInDb}
+        />
+    ))
+)}
             </div>
             <Pagination
                 drivers={allDrivers ? allDrivers.length : 0}
