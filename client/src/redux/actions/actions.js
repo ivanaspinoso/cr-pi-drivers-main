@@ -34,17 +34,26 @@ export const getTeams = () => {
 
 export const getByName = (name) => async (dispatch) => {
   try {
-     // Simulando una llamada a la API
-     const response = await axios(`http://localhost:3001/driversByname?name=${name}`);
-     const data = await response.data;
- 
-     // Despacha una acción para actualizar el estado con los datos obtenidos
-     dispatch({ type: GET_BY_NAME, payload: data });
+      // Simulando una llamada a la API
+      const response = await axios(`http://localhost:3001/driversByname?name=${name}`);
+      const data = await response.data;
+      if (data.length === 0) {
+       // Muestra un alerta indicando que no se encontró ningún conductor con ese nombre
+       window.alert('No se encontró ningún conductor con ese nombre.');
+       // Despacha una acción para actualizar el estado indicando que no se encontraron datos
+       dispatch({ type: GET_BY_NAME, payload: [] });
+      } else {
+       // Despacha una acción para actualizar el estado con los datos obtenidos
+       dispatch({ type: GET_BY_NAME, payload: data });
+      }
   } catch (error) {
+     // Muestra un alerta indicando que ocurrió un error al buscar el conductor
+     window.alert('No se encontró ningún conductor con ese nombre.');
      // Despacha una acción para manejar el error
      dispatch({ type: GET_BY_NAME, error });
   }
  };
+ 
  
 
 export const getById = (id) => {

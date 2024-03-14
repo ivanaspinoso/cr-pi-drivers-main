@@ -51,6 +51,9 @@ const Pagination = ({drivers, driversPerPage, currentPage, pagination}) => {
           </button>
         </li>
         <li>
+          <span>Page {currentPage} of {pageNumber}</span>
+        </li>
+        <li>
           <button onClick={handleNextClick}
             disabled={currentPage === pageNumber}
             className={styles.PageNumber}
