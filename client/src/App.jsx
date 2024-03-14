@@ -4,7 +4,7 @@ import Landing from './componentes/landing/Landing';
 import Home from "./componentes/home/Home";
 import Nav from "./componentes/nav/Nav";
 import Detail from "./componentes/detail/Detail";
-import Form from "./componentes/form/Form";
+import {Form} from "./componentes/form/Form";
 
 function App() {
   return (

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from './Drivers.module.css';
 
 const Drivers = ({ id, name, surname, teams, dob, image, createInDb }) => {
+  console.log('name', name)
  const [deleted, setDeleted] = useState(false);
  const [showConfirmation, setShowConfirmation] = useState(false);
  const dispatch = useDispatch();

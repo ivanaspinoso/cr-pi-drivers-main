@@ -34,10 +34,12 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    
   
     teams: {
       type: DataTypes.STRING,
     },
+
     
   });
 };

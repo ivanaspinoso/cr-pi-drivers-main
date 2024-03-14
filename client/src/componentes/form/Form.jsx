@@ -1,187 +1,202 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTeams, postDriver } from '../../redux/actions/actions';
-import { useNavigate } from 'react-router-dom';
+import {validate} from "../extras/validate"
 
-const validacion = (input) => {
-  let errors = {};
-  const regexTexto = /^[a-zA-Z]{2,}$/;
-  const regexImagen = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/;
+export const Form = () => {
+    const crearButtonRef = useRef(null);
+    const dispatch = useDispatch();
+    const [input, setInput] = useState({
+        forename: "",
+        surname: "",
+        nationality: "",
+        image: "",
+        dob: "",
+        description: "",
+        teams: [],
+        filterTeams: [], // Se guardan los equipos filtrados
+    });
 
-  if (!regexTexto.test(input.name)) {
-      errors.name = "El nombre debe contener solo letras";
-  }
-  if (!regexTexto.test(input.lastname)) {
-      errors.lastname = "El apellido debe contener solo letras";
-  }
-  if (!regexTexto.test(input.nationality)) {
-      errors.nationality = "La nacionalidad debe contener solo letras";
-  }
-  if (input.description.length < 10) {
-      errors.description = "La descripción debe ser más larga";
-  }
-  if (!regexImagen.test(input.image)) {
-      errors.image = "La url no es válida";
-  }
-  if (!input.dob) {
-      errors.dob = "El campo de nacimiento es obligatorio"
-  } else {
-      const birthDate = new Date(input.dob);
-      const currentDate = new Date();
-      const diffYears = currentDate.getFullYear() - birthDate.getFullYear()
+    useEffect(() => {
+        dispatch(getTeams());
+    }, [dispatch]);
 
-      if (diffYears < 13) {
-          errors.dob = 'La fecha de nacimiento debe ser de una antigüedad no menor a 13 años';
-      }
-  }
-  if (!input.teams || input.teams.length === 0) {
-      errors.teams = 'Debe seleccionar al menos una escudería';
-  }
-  return errors;
-};
+    const teams = useSelector((state) => state.teams);
+    const [selectedTeam, setSelectedTeam] = useState([]);
+    const [errors, setErrors] = useState({});
+    const [filter, setFilter] = useState(""); // Corregido para usar useState
 
-export default function Form() {
+    const filteredTeams = teams?.filter((team) =>
+        team.name.toLowerCase().includes(filter.toLowerCase())
+    );
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setInput((prevInput) => ({
+            ...prevInput,
+            [name]: value,
+        }));
 
-  useEffect(() => {
-      dispatch(getTeams());
-  }, []);
+        const updatedErrors = { ...errors, [name]: validate(name, value) };
+        setErrors(updatedErrors);
+    };
 
-  const allTeams = useSelector((state) => state.teams);
+    useEffect(() => {
+        const hasErrors = Object.values(errors).some((error) => !!error);
+        crearButtonRef.current.disabled = hasErrors;
+    }, [errors]);
 
-  const [driver, setDriver] = useState({
-      name: "",
-      lastname: "",
-      nationality: "",
-      image: "",
-      dob: "",
-      description: "",
-      teams: []
-  });
+    const handleSelect = (event) => {
+        const selectedTeams = event.target.value;
+        const selectedTeamObject = teams.find(
+            (team) => team.name === selectedTeams
+        );
 
-  const [errors, setErrors] = useState({
-      name: "",
-      lastname: "",
-      nationality: "",
-      image: "",
-      dob: "",
-      description: "",
-      teams: ""
-  });
+        if (!input.teams.includes(selectedTeams) && !selectedTeam.some((team) => team.name === selectedTeams)) {
+            setInput((prevInput) => ({
+                ...prevInput,
+                teams: [...prevInput.teams, selectedTeams],
+                filterTeams: [...prevInput.filterTeams, selectedTeamObject],
+            }));
+            setSelectedTeam((prevSelectedTeams) => [
+                ...prevSelectedTeams,
+                selectedTeamObject,
+            ]);
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                filterTeams: "",
+            }));
+        } else {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                filterTeams: "Este equipo ya ha sido seleccionado",
+            }));
+        }
+    };
 
-  const handleChange = (e) => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const driver = {
+            ...input,
+            filterTeams: input.filterTeams.map((team) => team.name),
+        }
+        dispatch(postDriver(driver))
+        setInput({
+            forename: "",
+            surname: "",
+            nationality: "",
+            image: "",
+            dob: "",
+            description: "",
+            teams: [],
+            filterTeams: [],
+        })
+        setSelectedTeam([])
+    }
 
-      const { name, value } = e.target;
+    const handleRemove = (teams) => {
+        setSelectedTeam((prevSelectedTeams) =>
+            prevSelectedTeams.filter((tea) => tea !== teams))
+    }
 
-      if (name === 'teams') {
-
-          if (value === '--Escuderías--') {
-              return;
-          }
-
-          if (!driver.teams.includes(value)) {
-              setDriver(prevState => ({
-                  ...prevState,
-                  teams: [...prevState.teams, value]
-              }));
-              setErrors(validacion({
-                  ...driver,
-                  teams: [...driver.teams, value]
-              }));
-          }
-
-      } else {
-
-          setDriver({
-              ...driver,
-              [name]: value,
-          });
-
-          setErrors(
-              validacion({
-                  ...driver,
-                  [name]: value,
-              })
-          );
-
-      }
-
-  };
-
-  const handleRemove = (team) => (e) => {
-      e.preventDefault();
-      setDriver(prevState => ({
-          ...prevState,
-          teams: prevState.teams.filter(escuderia => escuderia !== team)
-      }));
-      setErrors(validacion({
-          ...driver,
-          teams: driver.teams.filter(escuderia => escuderia !== team)
-      }));
-  }
-
-  const disableButton = () => {
-
-      const formIsEmpty = Object.values(driver).some(value => value === "");
-
-      const hasErrors = Object.values(errors).some(error => error !== "");
-
-      return formIsEmpty || hasErrors;
-  };
-
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      dispatch(postDriver(driver));
-      navigate('/home');
-  };
-
-  return (
-      <div>
-          <form onSubmit={handleSubmit}>
-              <label>Nombre : </label>
-              <input onChange={handleChange} name="name" type="text" />
-              {errors.name ? <label>{errors.name}</label> : null}
-              <label>Apellido : </label>
-              <input onChange={handleChange} name="lastname" type="text" />
-              {errors.lastname ? <label>{errors.lastname}</label> : null}
-              <label>Nacionalidad : </label>
-              <input onChange={handleChange} name="nationality" type="text" />
-              {errors.nationality ? <label>{errors.nationality}</label> : null}
-              <label>Imagen : </label>
-              <input onChange={handleChange} name="image" type="text" />
-              {errors.image ? <label>{errors.image}</label> : null}
-              <label>Fecha de Nacimiento : </label>
-              <input onChange={handleChange} name="birthday" type="date" />
-              {errors.dob ? <label>{errors.dob}</label> : null}
-              <label>Descripción : </label>
-              <input onChange={handleChange} name="description" type="text" />
-              {errors.description ? <label>{errors.description}</label> : null}
-              <div>
-                  <label>Escuderías : </label>
-                  <select onChange={handleChange} name="teams">
-                      <option value="--Escuderías--">--Escuderías--</option>
-                      {[...allTeams].sort((a, b) => a.name.localeCompare(b.name)).map(team => (
-                          <option key={team.id} value={team.name}>
-                              {team.name}
-                          </option>
-                      ))}
-                  </select>
-                  <div>
-                      <h3>Escuderías seleccionadas : </h3>
-                      {driver.teams.map((team, index) => (
-                          <div key={index}>
-                              <p>{team}</p>
-                              <button onClick={handleRemove(team)}>X</button>
-                          </div>
-                      ))}
-                  </div>
-              </div>
-              {errors.teams ? <label>{errors.teams}</label> : null}
-              <input type="submit" disabled={disableButton()} />
-          </form>
-      </div>
-  );
-}
-
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <h1>Registrar Conductor</h1>
+                    <div>
+                        <label>Nombre:</label>
+                        <input
+                            type="text"
+                            name="forename" // Cambiado a forename
+                            value={input.forename} // Cambiado a forename
+                            onChange={handleChange}
+                            placeholder="Nombre del conductor"
+                        />
+                        {errors.forename && <p>{errors.forename}</p>} // Cambiado a forename
+                    </div>
+                    <div>
+                        <label>Apellido:</label>
+                        <input
+                            type="text"
+                            name="surname" // Cambiado a surname
+                            value={input.surname} // Cambiado a surname
+                            onChange={handleChange}
+                            placeholder="Apellido del conductor"
+                        />
+                        {errors.surname && <p>{errors.surname}</p>} // Cambiado a surname
+                    </div>
+                    <div>
+                        <label>Nacionalidad:</label>
+                        <input
+                            type="text"
+                            name="nationality"
+                            value={input.nationality}
+                            onChange={handleChange}
+                            placeholder="Nacionalidad del conductor"
+                        />
+                        {errors.nationality && <p>{errors.nationality}</p>}
+                    </div>
+                    <div>
+                        <label>Imagen:</label>
+                        <input
+                            type="text"
+                            name="image"
+                            value={input.image}
+                            onChange={handleChange}
+                            placeholder="URL de la imagen del conductor"
+                        />
+                        {errors.image && <p>{errors.image}</p>}
+                    </div>
+                    <div>
+                        <label>Fecha de Nacimiento:</label>
+                        <input
+                            type="date"
+                            name="dob"
+                            value={input.dob}
+                            onChange={handleChange}
+                        />
+                        {errors.dob && <p>{errors.dob}</p>}
+                    </div>
+                    <div>
+                        <label>Descripción:</label>
+                        <textarea
+                            name="description"
+                            value={input.description}
+                            onChange={handleChange}
+                            placeholder="Descripción del conductor"
+                        />
+                        {errors.description && <p>{errors.description}</p>}
+                    </div>
+                    <div>
+                        <label>Escuderías:</label>
+                        <select
+                            name="teams"
+                            onChange={handleSelect}
+                        >
+                            <option value="">Seleccionar escuderia</option>
+                            {filteredTeams?.map((team) => (
+                                <option key={team.id} value={team.name}>
+                                    {team.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.teams && <p>{errors.teams}</p>}
+                    </div>
+                    <div>
+                        <h3>Escuderías seleccionadas:</h3>
+                        {selectedTeam.map((team, index) => (
+                            <div key={index}>
+                                <p>{team.name}</p>
+                                <button onClick={() => handleRemove(team)}>X</button>
+                            </div>
+                        ))}
+                    </div>
+                    <button type="submit" ref={crearButtonRef}>
+                        Registrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+                        }    

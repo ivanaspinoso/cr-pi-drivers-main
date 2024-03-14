@@ -1,5 +1,3 @@
-// controllers/postDrivers.js
-
 const { Driver, Team } = require('./../db');
 
 const postDrivers = async (req, res) => {

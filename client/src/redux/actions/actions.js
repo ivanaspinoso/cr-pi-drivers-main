@@ -39,10 +39,10 @@ export const getByName = (name) => async (dispatch) => {
      const data = await response.data[0];
  
      // Despacha una acción para actualizar el estado con los datos obtenidos
-     dispatch({ type: 'GET_BY_NAME', payload: data });
+     dispatch({ type: GET_BY_NAME, payload: data });
   } catch (error) {
      // Despacha una acción para manejar el error
-     dispatch({ type: 'GET_BY_NAME', error });
+     dispatch({ type: GET_BY_NAME, error });
   }
  };
  
