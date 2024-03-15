@@ -8,7 +8,7 @@ deleteRouter.delete("/delete/:id", async (req, res) => {
         const driver = await deleteDriver(id);
         return res.status(200).json(`The driver ${driver.name} was deleted`);
     } catch (error) {
-        return res.status(404).send(error.message);
+        return res.status(404).json(error.message);
     }
 });
 

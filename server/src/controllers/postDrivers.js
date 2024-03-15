@@ -1,39 +1,62 @@
 const { Driver, Team } = require('./../db');
+const axios = require("axios")
+const {Sequelize} = require("sequelize")
+const Op= Sequelize.Op;
 
-const postDrivers = async (req, res) => {
-    try {
-        const { forename, surname, description, image, nationality, dob, teams } = req.body;
+const postDrivers =async (
+  forename,
+  surname,
+  image,
+  description,
+  nationality,
+  dob,
+  teams
+) => {
+  const apiUrl = "http://localhost:5000/drivers";
+  const toLowForname = forename ? forename.toLowerCase() : '';
+  console.log(toLowForname,"tolowforname")
+  const toLowSurname = surname ? surname.toLowerCase() : '';
+  console.log(toLowSurname, "surname")
+  const toLowNationality = nationality ? nationality.toLowerCase() : '';
+  console.log(toLowNationality,"lotrae")
 
-        if (!teams?.length || !forename || !surname || !description || !image || !nationality || !dob) {
-            return res.status(400).json({ error: 'Incomplete Driver Data', missingFields: ['teams', 'forename', 'surname', 'description', 'image', 'nationality', 'dob'].filter(field => !req.body[field]) });
-        }
-        
+  const filteredDB = await Driver.findAll({
+    where: {
+      forename: { [Op.iLike]: `%${toLowForname}%` },
+      surname: { [Op.iLike]: `%${toLowSurname}%` },
+      nationality: { [Op.iLike]: `%${toLowNationality}%` },
+    },
+  });
 
-        const teamIds = await Promise.all(teams.map(async (teamName) => {
-            const team = await Team.findOne({ where: { forename: teamName } });
-            return team.id;
-        }));
+  const resp = await axios.get(`${apiUrl}`);
+  const matchingObjects = resp.data.filter((obj) => {
+    return (
+      obj.forename?.toLowerCase() === forename?.toLowerCase() &&
+      obj.surname?.toLowerCase() === surname?.toLowerCase() &&
+      obj.nationality?.toLowerCase() === nationality?.toLowerCase() &&
+      obj.dob === dob
+    );
+ });
 
-        const [newDriver, created] = await Driver.findOrCreate({
-            where: {
-                forename,
-                surname,
-                description,
-                image,
-                nationality,
-                dob
-            }
-        });
+  if (matchingObjects.length === 0 && filteredDB.length === 0) {
+    const newDriver = await Driver.create({
+      forename,
+      surname,
+      image,
+      description,
+      nationality,
+      dob,
+      teams,
+    });
+    if (teams) {
+      const teamNames = teams.split(", ");
 
-        await newDriver.setTeams(teamIds);
-
-        // Solo envía una respuesta aquí
-        return res.status(200).json(newDriver);
-
-    } catch (err) {
-        // Solo envía una respuesta aquí
-        return res.status(500).json({ error: err.message });
+      const searchTeam = await Team.findAll({
+        where: { teamName: { [Op.in]: teamNames } },
+      });
+      const response = await newDriver.addTeam(searchTeam);
+      return newDriver;
     }
-}
-
-module.exports = postDrivers;
+  } else throw new Error("That driver already exists");
+};
+module.exports =postDrivers;

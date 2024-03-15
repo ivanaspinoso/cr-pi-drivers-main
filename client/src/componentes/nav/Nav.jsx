@@ -10,6 +10,7 @@ const Nav = () => {
 
   const handleClick = () => {
     setRender(!render)
+    dispatch(resetDriver())
   }
 
   useEffect(() => {

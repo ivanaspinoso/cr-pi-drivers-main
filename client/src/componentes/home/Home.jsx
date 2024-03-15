@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filterByBirthdate, filterByName, filteredByOrigin, filterByTeam, getByName, getDrivers, getTeams } from '../../redux/actions/actions';
 import Searchbar from '../searchbar/Searchbar';
 import Drivers from '../drivers/Drivers';
-import Pagination from '../Pagination/Pagination';
+import Pagination from '../pagination/Pagination';
 import styles from './Home.module.css';
 
 const Home = () => {
@@ -45,16 +45,20 @@ const Home = () => {
     const handleClick = (event) => {
         event.preventDefault();
         resetPagination();
-        dispatch(getDrivers());
+        // Restablece los filtros en el estado de Redux
         dispatch(filterByBirthdate(""));
         dispatch(filterByTeam(""));
         dispatch(filteredByOrigin(""));
         dispatch(filterByName(""));
+        // Restablece los estados locales
         setSelectedBirthdateFilter("");
         setSelectedNameFilter("");
         setSelectedOriginFilter("");
         setSelectedTeamFilter("");
+        // Despacha una acción para obtener los drivers basados en el estado actual de Redux
+        dispatch(getDrivers());
     };
+    
 
     const handleChange = (e) => {
         const val = e.target.value;
@@ -104,6 +108,7 @@ const Home = () => {
                 <div className={styles.driversContainer}>
                     <Searchbar onSearch={handleSearch} />
                 </div>
+                
                 <div className={styles.filterContainer}>
                     <h3>Ordenar:</h3>
                     <div className={styles.filterOption}>
@@ -173,6 +178,13 @@ const Home = () => {
                     </button>
                 </div>
             </div>
+            <Pagination
+            
+            drivers={allDrivers ? allDrivers.length : 0}
+            driversPerPage={driversPerPage}
+            currentPage={currentPage}
+            pagination={pagination}
+        />
             <div>
             {driver?.length >= 1 ? (
     driver.map((driverItem) => (
@@ -207,6 +219,7 @@ const Home = () => {
 )}
             </div>
             <Pagination
+            
                 drivers={allDrivers ? allDrivers.length : 0}
                 driversPerPage={driversPerPage}
                 currentPage={currentPage}
