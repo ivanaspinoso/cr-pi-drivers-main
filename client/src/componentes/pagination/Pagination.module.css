@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   margin-top: 16px;
-  background-color: #fdfeff; 
+  background-color: #495057; 
   margin-bottom: -20px;
   
 }
@@ -15,8 +15,8 @@
   margin-left: 16px; 
   margin-right: 16px;
   gap: 2px;
-  margin-top: 5px; /* Ajusta este valor para agregar espacio arriba de la paginación */
-  margin-bottom: 32px; /* Ajusta este valor para agregar espacio debajo de la paginación */
+  margin-top: 20px; /* Ajusta este valor para agregar espacio arriba de la paginación */
+  margin-bottom: 20px; /* Ajusta este valor para agregar espacio debajo de la paginación */
 }
 
 .PageNumber {

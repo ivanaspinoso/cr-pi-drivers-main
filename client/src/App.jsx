@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
-        <Nav />
+         <Nav /> 
         <Routes>
           <Route exact path='/' element={<Landing />} />
           <Route path='/home' element={<Home />} />

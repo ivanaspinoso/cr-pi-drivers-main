@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import styles from './Landing.module.css'; // Asegúrate de que la ruta sea correcta
+// En la parte superior de tu archivo Landing.js
 
 const Landing = () => {
  return (

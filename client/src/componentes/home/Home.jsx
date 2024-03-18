@@ -100,10 +100,12 @@ const Home = () => {
     };
 
     return (
-        <div className={styles.homeAll}>
+        <div className={styles.homeAll} >
             <div className={styles.homeContainer}>
+            
                 <div className={styles.titleContainer}>
-                    <h1 className={styles.title}>¡Bienvenido al mundo de los conductores!</h1>
+               
+                    <h1 className={styles.title}>¡Bienvenido!</h1>
                 </div>
                 <div className={styles.driversContainer}>
                     <Searchbar onSearch={handleSearch} />
@@ -178,13 +180,7 @@ const Home = () => {
                     </button>
                 </div>
             </div>
-            <Pagination
-            
-            drivers={allDrivers ? allDrivers.length : 0}
-            driversPerPage={driversPerPage}
-            currentPage={currentPage}
-            pagination={pagination}
-        />
+           
             <div>
             {driver?.length >= 1 ? (
     driver.map((driverItem) => (

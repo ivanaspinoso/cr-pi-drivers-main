@@ -4,6 +4,7 @@ import { deleteDriver } from '../../redux/actions/actions';
 import { Link } from 'react-router-dom';
 import styles from './Drivers.module.css';
 
+
 const Drivers = ({ id, forename, surname, teams, dob, image, createInDb }) => {
  const [deleted, setDeleted] = useState(false);
  const [showConfirmation, setShowConfirmation] = useState(false);
@@ -31,7 +32,9 @@ const Drivers = ({ id, forename, surname, teams, dob, image, createInDb }) => {
 
  return (
     <div className={styles.driverCard}>
+      
       <div className={styles.content}>
+        
         <Link to={`/drivers/${id}`} className={styles.link}>
           <h3 className={styles.title}>{forename} {surname}</h3>
         </Link>
