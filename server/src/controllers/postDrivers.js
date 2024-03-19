@@ -1,9 +1,9 @@
 const { Driver, Team } = require('./../db');
-const axios = require("axios")
-const {Sequelize} = require("sequelize")
-const Op= Sequelize.Op;
+const axios = require("axios");
+const { Sequelize } = require("sequelize");
+const Op = Sequelize.Op;
 
-const postDrivers =async (
+const postDrivers = async (
   forename,
   surname,
   image,
@@ -14,11 +14,8 @@ const postDrivers =async (
 ) => {
   const apiUrl = "http://localhost:5000/drivers";
   const toLowForname = forename ? forename.toLowerCase() : '';
-  console.log(toLowForname,"tolowforname")
   const toLowSurname = surname ? surname.toLowerCase() : '';
-  console.log(toLowSurname, "surname")
   const toLowNationality = nationality ? nationality.toLowerCase() : '';
-  console.log(toLowNationality,"lotrae")
 
   const filteredDB = await Driver.findAll({
     where: {
@@ -36,7 +33,7 @@ const postDrivers =async (
       obj.nationality?.toLowerCase() === nationality?.toLowerCase() &&
       obj.dob === dob
     );
- });
+  });
 
   if (matchingObjects.length === 0 && filteredDB.length === 0) {
     const newDriver = await Driver.create({
@@ -46,17 +43,18 @@ const postDrivers =async (
       description,
       nationality,
       dob,
-      teams,
+      teams: 'Default Team', // Asigna un equipo predeterminado si no se proporciona ninguno
     });
-    if (teams) {
-      const teamNames = teams.split(", ");
+    
+    // Busca el equipo por nombre
+    const defaultTeam = await Team.findOne({ where: { name: 'Default Team' } });
+    // Asocia el conductor con el equipo predeterminado
+    await newDriver.addTeam(defaultTeam);
 
-      const searchTeam = await Team.findAll({
-        where: { teamName: { [Op.in]: teamNames } },
-      });
-      const response = await newDriver.addTeam(searchTeam);
-      return newDriver;
-    }
-  } else throw new Error("That driver already exists");
+    return newDriver;
+  } else {
+    throw new Error("That driver already exists");
+  }
 };
-module.exports =postDrivers;
+
+module.exports = postDrivers;

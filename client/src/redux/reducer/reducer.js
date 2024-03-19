@@ -82,7 +82,7 @@ const reducer = (state = initialState, action) => {
                         sortedDriversByBirthdate = [...state.drivers].sort((a, b) => {
                             const dateA = new Date(a.dob);
                             const dateB = new Date(b.dob);
-                            return action.payload === "asc" ? dateB - dateA : dateA - dateB;
+                            return action.payload === "asc" ? dateA - dateB : dateB - dateA;
                         });
                     } else if (action.payload === "sin orden") {
                         // Ordenar de manera aleatoria
@@ -94,6 +94,7 @@ const reducer = (state = initialState, action) => {
                     };
                 
                     case FILTER_BY_NAME:
+                        console.log(action.payload)
                         // Asumiendo que action.payload es "asc" o "desc" para ordenar por nombre
                         const sortedDriversByName = [...state.driversCopy].sort((a, b) => {
                             return action.payload === "asc" ? a.forename.localeCompare(b.forename) : b.forename.localeCompare(a.forename);

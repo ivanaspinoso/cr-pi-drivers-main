@@ -10,8 +10,8 @@ const getDbDriver=async()=>{
     const reDriver= dbDriver?.map((driver)=>{
         return{
             id: driver.id,
-            name: driver.name.forename,
-            surname: driver.name.surname,
+            forename: driver.forename,
+            surname: driver.surname,
             image: driver.image, 
             nationality: driver.nationality,
             dob: driver.dob,

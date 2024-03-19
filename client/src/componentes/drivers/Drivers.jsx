@@ -42,7 +42,7 @@ const Drivers = ({ id, forename, surname, teams, dob, image, createInDb }) => {
           <img className={styles.image} src={image} alt={`${forename} ${surname}`} />
         </div>
         <p className={styles.info}>Fecha de nacimiento: {dob}</p>
-        <p className={styles.teams}>Equipos: {teams.join(", ")}</p>
+        {/* <p className={styles.teams}>Equipos: {teams.join(", ")}</p> */}
         {createInDb && (
           <button onClick={() => handleDeleteDriver(id)}>
             Eliminar

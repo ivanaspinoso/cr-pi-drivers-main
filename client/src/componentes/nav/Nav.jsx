@@ -11,6 +11,8 @@ const Nav = () => {
   const handleClick = () => {
     setRender(!render)
     dispatch(resetDriver())
+    window.location.reload()
+
   }
 
   useEffect(() => {

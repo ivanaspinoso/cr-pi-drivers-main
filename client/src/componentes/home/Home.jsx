@@ -5,6 +5,7 @@ import Searchbar from '../searchbar/Searchbar';
 import Drivers from '../drivers/Drivers';
 import Pagination from '../pagination/Pagination';
 import styles from './Home.module.css';
+import imagenStandard from '../../componentes/extras/landing2.jpg'
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -27,20 +28,15 @@ const Home = () => {
     useEffect(() => {
         dispatch(getDrivers());
         dispatch(getTeams());
-    }, [])
-
+    }, []);
+    
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
     const resetPagination = () => {
         setCurrentPage(1);
-    };
-
-    useEffect(() => {
-        dispatch(getDrivers());
-        dispatch(getTeams());
-    }, [dispatch]);
+    }
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -187,7 +183,7 @@ const Home = () => {
         <Drivers
             key={driverItem.id}
             id={driverItem.id}
-            forename={driverItem.forename}
+            forename={driverItem?.forename}
             surname={driverItem.surname}
             nationality={driverItem.nationality}
             image={driverItem.image.url}
@@ -202,10 +198,10 @@ const Home = () => {
         <Drivers
             key={driver.id}
             id={driver.id}
-            forename={driver.forename}
+            forename={driver?.forename}
             surname={driver.surname}
             nationality={driver.nationality}
-            image={driver.image.url}
+            image={driver.image.url || imagenStandard}
             dob={driver.dob}
             description={driver.description}
             teams={driver.teams}

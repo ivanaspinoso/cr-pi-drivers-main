@@ -63,7 +63,7 @@ export const Form = () => {
       image: form.image,
       nationality: form.nationality,
       dob: form.dob,
-      teams: teamsOk,
+      teams: selectedTeams,
     };
     dispatch(postDriver(newDriver)).then((res) => {
         if (res === true) {
@@ -185,7 +185,7 @@ export const Form = () => {
             </option>
             {sortedTeams.map((team) => (
               <option key={team.id} value={team.id}>
-                {team.teamName}
+                {team.name}
               </option>
             ))}
           </select>
