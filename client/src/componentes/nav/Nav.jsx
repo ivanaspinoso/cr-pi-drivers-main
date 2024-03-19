@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { resetDriver } from '../../redux/actions/actions';
 import styles from './Nav.module.css'; // Asegúrate de que la ruta sea correcta
 
 const Nav = () => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
   const [render, setRender] = useState(false)
 
   const handleClick = () => {
-    setRender(!render)
-    dispatch(resetDriver())
-    window.location.reload()
-
+    dispatch(resetDriver());
+    setRender(!render);
+    navigate('/home');
   }
 
   useEffect(() => {

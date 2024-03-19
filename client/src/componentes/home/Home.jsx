@@ -8,12 +8,13 @@ import styles from './Home.module.css';
 import imagenStandard from '../../componentes/extras/landing2.jpg'
 
 const Home = () => {
-    const dispatch = useDispatch();
-    const allDrivers = useSelector((state) => state.drivers);
+    const dispatch = useDispatch();//se utiliza para despachar acciones al store de Redux
+    const allDrivers = useSelector((state) => state.drivers); // selecciona partes del estados de Redux para usar en el componente
     const driver = useSelector((state) => state.driver);
     const driversCopy = useSelector((state) => state.driversCopy);
     const teamState = useSelector((state) => state.teams);
 
+    //se definen estados para manejar la paginacion, los filtros seleccionados y el estado actual de la lista de conductores
     const [currentPage, setCurrentPage] = useState(1);
     const [driversPerPage] = useState(9);
     const [selectedNameFilter, setSelectedNameFilter] = useState("");
@@ -25,10 +26,11 @@ const Home = () => {
     const firstDriverIndex = lastDriverIndex - driversPerPage;
     const currentDrivers = allDrivers ? allDrivers.slice(firstDriverIndex, lastDriverIndex) : [];
 
+    //despacha acciones que obtienen la lista de conductores y equipos cuando el componente se monta.
     useEffect(() => {
         dispatch(getDrivers());
         dispatch(getTeams());
-    }, []);
+    }, []);// asegura que estas acciones solo se despachen una vez, al montar el componente
     
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -38,6 +40,7 @@ const Home = () => {
         setCurrentPage(1);
     }
 
+      //se definen funciones para manejar eventos como cambios en los filtros, busquedas y la paginacion. estas funciones despachan acciones a Redux y actualizan el estado local segun sea necesario
     const handleClick = (event) => {
         event.preventDefault();
         resetPagination();
@@ -91,7 +94,6 @@ const Home = () => {
 
     const handleSearch = (search) => {
         resetPagination();
-        console.log('handlesearch')
         dispatch(getByName(search));
     };
 

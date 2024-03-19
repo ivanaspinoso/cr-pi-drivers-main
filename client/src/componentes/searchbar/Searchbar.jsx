@@ -5,14 +5,18 @@ import styles from './Searchbar.module.css'; // Asegúrate de que la ruta sea co
 
 const Searchbar = () => {
  const dispatch = useDispatch();
- const [searchName, setSearchName] = useState("");
- const [error, setError] = useState("");
+ const [searchName, setSearchName] = useState(""); //almacena el valor actual de la barra de busqueda
+ const [error, setError] = useState(""); //almacena algun tipo de error
 
+ //se llama cada vez que el usuario escribe en la barra de busqueda. Actualiza el estado searchName con el valor actual y limpia cualquier mensaje de error existente
+ //manejo del cambio en la barra de busqueda:
  const handleOnChange = (event) => {
     setSearchName(event.target.value);
     setError("");
  };
 
+ //se llama cuando el usuario hace clic en el boton de busqueda. Primero verifica si el valor de busqueda esta vacio o si contiene caracteres no alfabeticos, si la busqueda es valida, despacha la accion getByName 
+ //manejo de la busqueda:
  const handleSearch = () => {
     const search = searchName.trim();
     if (!search) {
@@ -24,7 +28,7 @@ const Searchbar = () => {
     }
 
     dispatch(getByName(search));
-    setSearchName("");
+    setSearchName("");//limpia la busqueda
  };
 
  return (

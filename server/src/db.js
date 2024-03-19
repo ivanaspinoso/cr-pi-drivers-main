@@ -28,9 +28,10 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
+// Obtengo los modelos 'Driver' y 'Team' de la instancia de Sequelize
 const { Driver,Team } = sequelize.models;
 
-// Aca vendrian las relaciones
+// Establecer las relaciones de muchos a muchos entre los modelos 'Driver' y 'Team'
 // Product.hasMany(Reviews);
 Driver.belongsToMany(Team,{ through: "driver_team"})
 Team.belongsToMany(Driver, { through: "driver_team"})

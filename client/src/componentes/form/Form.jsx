@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTeams, postDriver } from '../../redux/actions/actions';
 import {useNavigate} from "react-router-dom"
 import validations from '../extras/validate';
+// import style from ""
 
+//Se inicializan los estados locales y se establecen los hooks useDispatch y useNavigate.
 export const Form = () => {
     const teams = useSelector((state) => state.teams);
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ export const Form = () => {
     teams: [],
   });
 
+  //Se definen las funciones para manejar la validación de formularios, el cambio de datos del formulario y la selección y eliminación de equipos.
   const handleValidation = () => {
     const errors = validations(form);
     setFormError(errors);
@@ -51,6 +54,7 @@ export const Form = () => {
     });
   };
 
+  //Se define la función para enviar el formulario y crear un nuevo conductor.
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -70,10 +74,11 @@ export const Form = () => {
           navigate("/home");
         }
      }).catch((error) => {
-        console.error(error); // Maneja cualquier error que pueda ocurrir
+        console.error(error); 
      });
     }
 
+  //Se define una función para deshabilitar el botón de envío del formulario si hay errores
   const disableButton = () => {
     let aux = true;
 
@@ -84,6 +89,7 @@ export const Form = () => {
     return aux;
   };
 
+  //Se utilizan los hooks useEffect para cargar los equipos al inicio y para actualizar la lista de equipos seleccionados.
   useEffect(() => {
     dispatch(getTeams());
   }, []);
@@ -97,6 +103,7 @@ export const Form = () => {
     handleValidation();
   }, [form]);
 
+  //Se renderiza el formulario con campos de entrada para el nombre, apellido, nacionalidad, fecha de nacimiento, imagen, descripción y selección de equipos.
   return (
     <div >
       <form  onSubmit={handleSubmit}>

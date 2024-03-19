@@ -4,9 +4,10 @@ const {Driver, Team}= require("../db")
 
 const getDbDriver=async()=>{
     const dbDriver= await Driver.findAll({
-        include:Team
+        include:Team //incluye los equiops asociados alos conductores en la consulta 
     });
-
+   
+    //mape los datos de los conductores obtenidos y los transforma segun el formato requerido
     const reDriver= dbDriver?.map((driver)=>{
         return{
             id: driver.id,

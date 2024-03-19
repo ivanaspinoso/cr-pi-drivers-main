@@ -14,8 +14,8 @@ postRouter.post("/", async (req,res)=>{
           nationality,
           dob,
           teams
-        );
-        res.status(201).json(created);
+        ); //crea un nuevo conductor
+        res.status(201).json(created); //responde con el conductor creado
       } catch (error) {
         res.status(400).json({ error: error.message });
       }

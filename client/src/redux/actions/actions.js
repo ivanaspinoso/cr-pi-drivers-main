@@ -2,6 +2,7 @@ import { GET_TEAMS, GET_BY_ID, GET_BY_NAME, GET_DRIVERS, POST_DRIVER, DELETE_DRI
 import axios from 'axios';
 const REACT_APP_URL_HOST = "http://localhost:3001";
 
+// obtiene lista de conductores de la API y despacha una accion con el tipo GET_DRIVERS y los datos obtenidos
 export const getDrivers = () => {
   return async (dispatch) => {
      try {
@@ -82,9 +83,11 @@ export const postDriver = (driver) => {
     try {
       const response = await axios.post(`${REACT_APP_URL_HOST}/drivers`, driver);
       dispatch({ type: POST_DRIVER, payload: response.data });
+      window.alert("Conductor creado correctamente");
       // En lugar de usar alert, podrías actualizar el estado de la aplicación para mostrar un mensaje de éxito
       return { success: true, message: "Conductor creado correctamente" };
     } catch (error) {
+      window.alert("Error al crear el conductor. Verificar que todos los datos estén completos.");
       return { error: true, message: "Verificar que todos los datos para crear al conductor estén completos" };
     }
  };
