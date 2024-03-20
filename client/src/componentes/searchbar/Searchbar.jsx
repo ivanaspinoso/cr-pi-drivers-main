@@ -28,7 +28,7 @@ const Searchbar = () => {
     }
 
     dispatch(getByName(search));
-    setSearchName("");//limpia la busqueda
+    setSearchName("");//limpia la
  };
 
  return (

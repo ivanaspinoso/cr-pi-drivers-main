@@ -9,7 +9,7 @@ const Nav = () => {
   const navigate = useNavigate(); 
   const [render, setRender] = useState(false)
 
-  const handleClick = () => {
+ const handleClick = () => {
     dispatch(resetDriver());
     setRender(!render);
     navigate('/home');

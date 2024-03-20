@@ -30,7 +30,16 @@ const Detail = () => {
             <div className={styles.imageContainer}>
                 <img className={styles.image} src={driver.image?.url} alt={`${forename} ${surname}`} />
             </div>
-            <p className={styles.info}>Team: {driver.teams}</p>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center', 
+                gap:'1px', 
+                width: '100%'
+            }} className={styles.info}>Team: {driver?.teams?.map(team => <p style={{
+                padding: "0px 10px"
+            }}>{ team}</p>)}</div>
             <p className={styles.info}>Nacionalidad: {driver.nationality}</p>
             <p className={styles.info}>Descripción: {driver.description}</p>
             <p className={styles.info}>Fecha de nacimiento: {driver.dob}</p>

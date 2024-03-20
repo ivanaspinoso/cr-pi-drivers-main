@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Pagination.module.css'; // Asegúrate de que la ruta sea correcta
 
-const Pagination = ({ drivers, driversPerPage, currentPage, pagination }) => {
+const Pagination = ({ drivers, driversByname, driversPerPage, currentPage, pagination }) => {
+   
+const applyFilterForDriver = (driversByname !== undefined && driversByname >= 1);
 
-  //calculo el numero de paginas:
-    const pageNumber = Math.ceil(drivers / driversPerPage);
-    const [activePage, setActivePage] = useState(currentPage);
+// Calculo del número de páginas
+const totalDrivers = applyFilterForDriver ? driversByname : drivers;
+const pageNumber = Math.max(Math.ceil(totalDrivers / driversPerPage), 1);
 
-    //se ejecuta cada vez que currentPage cambia, actualizando elestado activePage con el nuevo valor de currentPage
-    //actualiza la pagina activa:
+
+const [activePage, setActivePage] = useState(currentPage);
+
+// Genera un array de números de página basado en el número total de páginas
+const pageNumbers = Array.from({ length: pageNumber }, (_, index) => index + 1);
+    // Se ejecuta cada vez que currentPage cambia, actualizando el estado activePage con el nuevo valor de currentPage
+    // Actualiza la página activa
     useEffect(() => {
         setActivePage(currentPage);
     }, [currentPage]);
 
-    //esta funcion se llama cuando se hace clic en un numero de pagina. Despacha la accion pagination con el numero de pagina seleccionado y actualiza el estado activePage con este numero
-    //manejo del clic en la pagina:
+    // Esta función se llama cuando se hace clic en un número de página. Despacha la acción pagination con el número de página seleccionado y actualiza el estado activePage con este número
+    // Manejo del clic en la página
     const handlePageClick = (page) => {
         pagination(page);
         setActivePage(page);
     };
 
-    //se ejecuta cada vez que currentPage cambia,desplazando de manera suave
-    //efecto para desplazarse hacia la parte superior
+    // Se ejecuta cada vez que currentPage cambia, desplazando de manera suave
+    // Efecto para desplazarse hacia la parte superior
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -29,7 +36,7 @@ const Pagination = ({ drivers, driversPerPage, currentPage, pagination }) => {
         });
     }, [currentPage]);
 
-    //funciones para ir a la primera y ultima pagina
+    // Funciones para ir a la primera y última página
     const goToFirstPage = () => {
         if (currentPage !== 1) {
             pagination(1);
@@ -44,8 +51,6 @@ const Pagination = ({ drivers, driversPerPage, currentPage, pagination }) => {
         }
     };
 
-    // Genera un array de números de página
-    const pageNumbers = Array.from({ length: pageNumber }, (_, index) => index + 1);
 
     // Divide el array de números de página en dos partes
     const half = Math.ceil(pageNumbers.length / 2);
@@ -72,17 +77,7 @@ const Pagination = ({ drivers, driversPerPage, currentPage, pagination }) => {
                     </button>
                 </li>
                 {/* Primera hilera de botones de números de página */}
-                {firstHalf.map((page, index) => (
-                    <li key={page}>
-                        <button onClick={() => handlePageClick(page)}
-                            className={`${styles.PageNumber} ${activePage === page ? styles.active : ''} ${index < firstHalf.length - 1 ? styles.firstRow : ''}`}
-                        >
-                            {page}
-                        </button>
-                    </li>
-                ))}
-                {/* Segunda hilera de botones de números de página */}
-                {secondHalf.map((page) => (
+                {pageNumbers.map((page) => (
                     <li key={page}>
                         <button onClick={() => handlePageClick(page)}
                             className={`${styles.PageNumber} ${activePage === page ? styles.active : ''}`}

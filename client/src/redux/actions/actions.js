@@ -84,6 +84,7 @@ export const postDriver = (driver) => {
       const response = await axios.post(`${REACT_APP_URL_HOST}/drivers`, driver);
       dispatch({ type: POST_DRIVER, payload: response.data });
       window.alert("Conductor creado correctamente");
+      window.location.replace('/home')
       // En lugar de usar alert, podrías actualizar el estado de la aplicación para mostrar un mensaje de éxito
       return { success: true, message: "Conductor creado correctamente" };
     } catch (error) {

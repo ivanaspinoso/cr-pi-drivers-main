@@ -2,7 +2,7 @@ import { GET_TEAMS, GET_BY_ID, GET_BY_NAME, GET_DRIVERS, FILTER_BY_BIRTHDATE, FI
 
 const initialState = {
     drivers: [],
-    driver: undefined,
+    driversByname: undefined,
     driversCopy: [],
     teams: [],
     details: [],
@@ -10,115 +10,106 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-        switch (action.type) {
-            case GET_DRIVERS:
-                return {
-                    ...state,
-                    drivers: action.payload,
-                    driversCopy: action.payload,
-                };
-            case GET_TEAMS:
-                return {
-                    ...state,
-                    teams: action.payload,
-                };
-            case GET_BY_NAME:
-                return {
-                    ...state,
-                    driver: action.payload,
-                };
-            case GET_BY_ID:
-                return {
-                    ...state,
-                    details: action.payload,
-                };
-                case RESET_DRIVERS:
-                    return {
-                        ...state,
-                        driver: undefined,
-                    };
-            case POST_DRIVER:
-                return {
-                    ...state,
-                    drivers: [...state.drivers, action.payload],
-                    driversCopy: [...state.driversCopy, action.payload], // Asegurarse de que driversCopy se actualice también
-                };
-            case FILTER_BY_ORIGIN:
-                    // Filtrar por origen, pero mantener una copia de los conductores originales
-                    const filteredByOrigin = state.driversCopy.filter(driver => driver.origin === action.payload || action.payload === "all");
-                    return {
-                    ...state,
-                    drivers: filteredByOrigin,
-                    // No actualizamos driversCopy aquí porque queremos mantener la lista original
-                    };
-
-            case FILTER_BY_TEAM:
-                    // Suponiendo que quieres aplicar múltiples filtros y mantener un estado separado para el resultado
-                    let filteredDrivers = state.driversCopy; // Comienza con los datos originales
-
-            // Aplica el filtro por equipo
-            filteredDrivers = filteredDrivers.filter(driver => {
-                if (driver.teams) {
-                    return driver.teams.includes(action.payload) || action.payload === "All";
-                }
-                return false;
-            });
-
-            // Aquí podrías aplicar más filtros a filteredDrivers si es necesario
-
+    switch (action.type) {
+        case GET_DRIVERS:
             return {
                 ...state,
-                drivers: filteredDrivers, // Actualiza el estado con los conductores filtrados
+                drivers: action.payload,
+                driversCopy: action.payload,
             };
-
-            case FILTER_BY_BIRTHDATE:
-            // Asumiendo que action.payload es "asc", "desc" o "sin orden" para ordenar por fecha de nacimiento
+        case GET_TEAMS:
+            return {
+                ...state,
+                teams: action.payload,
+            };
+        case GET_BY_NAME:
+            return {
+                ...state,
+                driversByname: action.payload,
+            };
+        case GET_BY_ID:
+            return {
+                ...state,
+                details: action.payload,
+            };
+        case RESET_DRIVERS:
+            return {
+                ...state,
+                driversByname: undefined,
+            };
+        case POST_DRIVER:
+            return {
+                ...state,
+                drivers: [...state.drivers, action.payload],
+                driversCopy: [...state.driversCopy, action.payload],
+            };
+        case FILTER_BY_ORIGIN:
+            const filteredByOrigin = state.drivers?.filter(driver => driver.origin === action.payload || action.payload === "all") || state.drivers.filter(driver => driver.origin === action.payload || action.payload === "all");
+            return {
+                ...state,
+                drivers: filteredByOrigin,
+                driversByname: filteredByOrigin,
+            };
+        case FILTER_BY_TEAM:
+            const filteredByTeam = state.driversByname?.filter(driver => driver.teams.includes(action.payload) || action.payload === "All") || state.drivers.filter(driver => driver.teams.includes(action.payload) || action.payload === "All");
+            return {
+                ...state,
+                drivers: filteredByTeam,
+                driversByname: filteredByTeam,
+            };
+        case FILTER_BY_BIRTHDATE:
             let sortedDriversByBirthdate;
-            if (action.payload === "asc" || action.payload === "desc") {
-            // Ordenar por fecha de nacimiento
-            sortedDriversByBirthdate = [...state.drivers].sort((a, b) => {
-            const dateA = new Date(a.dob);
-            const dateB = new Date(b.dob);
-            return action.payload === "asc" ? dateA - dateB : dateB - dateA;
+            if (state.driversByname?.length > 0) {
+                sortedDriversByBirthdate = [...state.driversByname].sort((a, b) => {
+                    const dateA = new Date(a.dob);
+                    const dateB = new Date(b.dob);
+                    return action.payload === "asc" ? dateA - dateB : dateB - dateA;
                 });
-            } else if (action.payload === "sin orden") {
-            // Ordenar de manera aleatoria
-            sortedDriversByBirthdate = [...state.drivers].sort(() => Math.random() - 0.5);
+            } else {
+                sortedDriversByBirthdate = [...state.driversCopy].sort((a, b) => {
+                    const dateA = new Date(a.dob);
+                    const dateB = new Date(b.dob);
+                    return action.payload === "asc" ? dateA - dateB : dateB - dateA;
+                });
             }
             return {
                 ...state,
                 drivers: sortedDriversByBirthdate,
+                driversByname: sortedDriversByBirthdate,
             };
-                
         case FILTER_BY_NAME:
-            // Asumiendo que action.payload es "asc" o "desc" para ordenar por nombre
-            const sortedDriversByName = [...state.driversCopy].sort((a, b) => {
+            let sortedDriversByName;
+            if (state.driversByname?.length > 0) {
+                sortedDriversByName = [...state.driversByname].sort((a, b) => {
                     return action.payload === "asc" ? a.forename.localeCompare(b.forename) : b.forename.localeCompare(a.forename);
-            });
-        return {
-            ...state,
-            drivers: sortedDriversByName,
-                };
-                        
-            
-            case DELETE_DRIVERS:
-                // Handle deletion of drivers from state
-                return {
-                    ...state,
-                    drivers: state.drivers.filter(driver => driver.id !== action.payload),
-                    driversCopy: state.driversCopy.filter(driver => driver.id !== action.payload), // Asegurarse de que driversCopy se actualice también
-                };
-            case DELETE_DRIVER_ID:
-                // Handle deletion of driver by id from state
-                return {
-                    ...state,
-                    drivers: state.drivers.filter(driver => driver.id !== action.payload),
-                    driversCopy: state.driversCopy.filter(driver => driver.id !== action.payload), // Asegurarse de que driversCopy se actualice también
-                };
-                
-            default:
-                return state;
-        }
-    };
+                });
+            } else {
+                sortedDriversByName = [...state.driversCopy].sort((a, b) => {
+                    return action.payload === "asc" ? a.forename.localeCompare(b.forename) : b.forename.localeCompare(a.forename);
+                });
+            }
+            return {
+                ...state,
+                drivers: sortedDriversByName,
+                driversByname: sortedDriversByName,
+            };
+        case DELETE_DRIVERS:
+            return {
+                ...state,
+                drivers: state.drivers.filter(driver => driver.id !== action.payload),
+                driversCopy: state.driversCopy.filter(driver => driver.id !== action.payload),
+            };
+        case DELETE_DRIVER_ID:
+            return {
+                ...state,
+                drivers: state.drivers.filter(driver => driver.id !== action.payload),
+                driversCopy: state.driversCopy.filter(driver => driver.id !== action.payload),
+            };
+        default:
+            return state;
+    }
+};
 
-    export default reducer;
+export default reducer;
+
+

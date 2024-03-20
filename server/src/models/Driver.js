@@ -37,7 +37,7 @@ module.exports = (sequelize) => {
     
   
     teams: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING ,
     },
 
     

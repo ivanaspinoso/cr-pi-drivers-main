@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTeams, postDriver } from '../../redux/actions/actions';
 import {useNavigate} from "react-router-dom"
 import validations from '../extras/validate';
-// import style from ""
+import styles from './Form.module.css';
 
 //Se inicializan los estados locales y se establecen los hooks useDispatch y useNavigate.
 export const Form = () => {
@@ -14,6 +14,7 @@ export const Form = () => {
     .slice()
     .sort((a, b) => (a?.teams?.localeCompare(b?.teams) || 0));
   const [selectedTeams, setSelectedTeams] = useState([]);
+  console.log(selectedTeams,'seleteams')
   const [formError, setFormError] = useState({});
   const [form, setForm] = useState({
     name: "",
@@ -67,7 +68,8 @@ export const Form = () => {
       image: form.image,
       nationality: form.nationality,
       dob: form.dob,
-      teams: selectedTeams,
+      teams: selectedTeams.map(team => team.name).join(', ')
+      
     };
     dispatch(postDriver(newDriver)).then((res) => {
         if (res === true) {
@@ -105,7 +107,19 @@ export const Form = () => {
 
   //Se renderiza el formulario con campos de entrada para el nombre, apellido, nacionalidad, fecha de nacimiento, imagen, descripción y selección de equipos.
   return (
-    <div >
+    <div className={styles.container}>
+      <div style={{ 
+        backgroundColor: 'white',
+        opacity: '60%',
+        marginBottom: '2rem',
+        padding: '20px'
+      }}>
+      <h1 style={{
+        marginBottom: '1rem',
+        fontStyle: 'bold',
+        fontSize: '50px'
+      }}>Crea tu prop driver:</h1>
+      </div>
       <form  onSubmit={handleSubmit}>
         <label>Name:</label>
         <input type="text" name="name" onChange={handleFormData} />
@@ -201,7 +215,7 @@ export const Form = () => {
  const team = teams.find((elem) => elem.id == teamId.id);
  return (
     <div key={team.id} >
-      <span >{team?.teamName}</span>
+      <span >{team?.name}</span>
       <button
         type="button"
         
@@ -229,4 +243,3 @@ export const Form = () => {
     </div>
   );
 };
-

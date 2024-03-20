@@ -5,6 +5,7 @@ const postDrivers = require("../controllers/postDrivers")
 
 postRouter.post("/", async (req,res)=>{
     const {forename, surname, description, image, nationality, dob, teams} = req.body;
+    console.log(teams)
     try {
         const created = await postDrivers(
           forename,

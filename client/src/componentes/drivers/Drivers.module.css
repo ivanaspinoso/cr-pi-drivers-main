@@ -1,6 +1,5 @@
 .driverCard {
     display: inline-block;
-    width: 60%; 
     box-sizing: border-box;
     padding: 10px;
     
@@ -22,8 +21,8 @@
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.195);
     transition: transform 0.3s ease;
-    
-    
+    width: 20rem;
+    height: 20rem;
   }
   
   .content:hover {

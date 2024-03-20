@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { filterByBirthdate, filterByName, filteredByOrigin, filterByTeam, getByName, getDrivers, getTeams } from '../../redux/actions/actions';
 import Searchbar from '../searchbar/Searchbar';
-import Drivers from '../drivers/Drivers';
+import DriversList from '../driverList/DriverList';
 import Pagination from '../pagination/Pagination';
 import styles from './Home.module.css';
-import imagenStandard from '../../componentes/extras/landing2.jpg'
 
 const Home = () => {
     const dispatch = useDispatch();//se utiliza para despachar acciones al store de Redux
+    const location = useLocation();
+
     const allDrivers = useSelector((state) => state.drivers); // selecciona partes del estados de Redux para usar en el componente
-    const driver = useSelector((state) => state.driver);
-    const driversCopy = useSelector((state) => state.driversCopy);
+    const driversByname = useSelector((state) => state.driversByname);
     const teamState = useSelector((state) => state.teams);
+    
 
     //se definen estados para manejar la paginacion, los filtros seleccionados y el estado actual de la lista de conductores
     const [currentPage, setCurrentPage] = useState(1);
@@ -30,7 +32,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(getDrivers());
         dispatch(getTeams());
-    }, []);// asegura que estas acciones solo se despachen una vez, al montar el componente
+    }, [location]);// asegura que estas acciones solo se despachen una vez, al montar el componente
     
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -75,6 +77,8 @@ const Home = () => {
         event.preventDefault();
         resetPagination();
         setSelectedBirthdateFilter(event.target.value);
+        setSelectedNameFilter('')
+        dispatch(filterByName(""));
         dispatch(filterByBirthdate(event.target.value));
     };
 
@@ -82,6 +86,8 @@ const Home = () => {
         event.preventDefault();
         resetPagination();
         setSelectedNameFilter(event.target.value);
+        setSelectedBirthdateFilter('')
+        dispatch(filterByBirthdate(""));
         dispatch(filterByName(event.target.value));
     };
 
@@ -149,7 +155,7 @@ const Home = () => {
                             <option value="">Seleccionar</option>
                             <option value="all">Todos</option>
                             <option value="api">API</option>
-                            <option value="created">Creado</option>
+                            <option value="database">Creado</option>
                         </select>
                     </div>
                     <div className={styles.filterOption}>
@@ -179,42 +185,17 @@ const Home = () => {
                 </div>
             </div>
            
-            <div>
-            {driver?.length >= 1 ? (
-    driver.map((driverItem) => (
-        <Drivers
-            key={driverItem.id}
-            id={driverItem.id}
-            forename={driverItem?.forename}
-            surname={driverItem.surname}
-            nationality={driverItem.nationality}
-            image={driverItem.image.url}
-            dob={driverItem.dob}
-            description={driverItem.description}
-            teams={driverItem.teams}
-            createInDb={driverItem.createInDb}
-        />
-    ))
-) : (
-    currentDrivers.map((driver) => (
-        <Drivers
-            key={driver.id}
-            id={driver.id}
-            forename={driver?.forename}
-            surname={driver.surname}
-            nationality={driver.nationality}
-            image={driver.image.url || imagenStandard}
-            dob={driver.dob}
-            description={driver.description}
-            teams={driver.teams}
-            createInDb={driver.createInDb}
-        />
-    ))
-)}
+            <div style={{display: 'flex', justifyContent: 'center', alignContent:'center'}}>
+            {driversByname?.length >= 1 ? (
+                <DriversList drivers={driversByname} />
+            ) : (
+                <DriversList drivers={currentDrivers} />
+            )}
             </div>
             <Pagination
             
                 drivers={allDrivers ? allDrivers.length : 0}
+                driversByname={driversByname? driversByname.length : 0}
                 driversPerPage={driversPerPage}
                 currentPage={currentPage}
                 pagination={pagination}
